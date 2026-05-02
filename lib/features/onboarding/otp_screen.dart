@@ -80,14 +80,17 @@ class _OtpScreenState extends State<OtpScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Verify Phone Number', style: AppTextStyles.sectionTitle),
+          const Text(
+            'Verify your phone number',
+            style: AppTextStyles.sectionTitle,
+          ),
           const SizedBox(height: 6),
           _VerificationMessage(
             phoneNumber: widget.phoneNumber,
             onEditNumber: _editNumber,
           ),
           const SizedBox(height: 28),
-          const Text('Verification Code', style: AppTextStyles.label),
+          const Text('Verification code', style: AppTextStyles.label),
           const SizedBox(height: 12),
           _OtpCodeInput(controller: _codeController, focusNode: _codeFocusNode),
           const SizedBox(height: 12),
@@ -113,9 +116,7 @@ class _VerificationMessage extends StatelessWidget {
       text: TextSpan(
         style: AppTextStyles.bodyMuted,
         children: [
-          const TextSpan(
-            text: 'We’ve sent a a 6-digit Verification code to your number ',
-          ),
+          const TextSpan(text: 'We sent a 6-digit code to '),
           TextSpan(text: '$phoneNumber. '),
           WidgetSpan(
             alignment: PlaceholderAlignment.baseline,
@@ -123,7 +124,7 @@ class _VerificationMessage extends StatelessWidget {
             child: GestureDetector(
               onTap: onEditNumber,
               child: const Text(
-                'Edit Number',
+                'Change number',
                 style: AppTextStyles.inlineAction,
               ),
             ),
@@ -237,14 +238,14 @@ class _ResendCodePrompt extends StatelessWidget {
             text: TextSpan(
               style: AppTextStyles.label,
               children: [
-                const TextSpan(text: 'You didn’t get the code. '),
+                const TextSpan(text: 'Didn’t receive a code? '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.baseline,
                   baseline: TextBaseline.alphabetic,
                   child: GestureDetector(
                     onTap: onResend,
                     child: const Text(
-                      'Resend',
+                      'Send again',
                       style: AppTextStyles.inlineActionSmall,
                     ),
                   ),

@@ -56,10 +56,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Register', style: AppTextStyles.title),
+          const Text('Create your account', style: AppTextStyles.title),
           const SizedBox(height: 14),
           const Text(
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            'Set up your profile to get started with MotoGo and personalize your experience.',
             style: AppTextStyles.bodyMuted,
           ),
           const SizedBox(height: 22),
@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: Text(
-                    'Email Address is used to send you latest updates and news and its optional in case you don’t want to add.',
+                    'Optional. We\'ll use your email to send account updates, offers, and important news.',
                     style: AppTextStyles.caption,
                   ),
                 ),

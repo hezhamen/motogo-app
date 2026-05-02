@@ -103,9 +103,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 const SizedBox(height: 16),
                 AppPrimaryButton(
                   label: switch (_activeStep) {
-                    0 => 'Register',
-                    1 => 'Verify',
-                    _ => 'Continue',
+                    0 => 'Create account',
+                    1 => 'Verify number',
+                    _ => 'Save preferences',
                   },
                   onPressed: switch (_activeStep) {
                     0 => () => _goToStep(1),

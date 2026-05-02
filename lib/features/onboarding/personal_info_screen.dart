@@ -51,10 +51,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Personal Information', style: AppTextStyles.sectionTitle),
+          const Text(
+            'Personalize your feed',
+            style: AppTextStyles.sectionTitle,
+          ),
           const SizedBox(height: 6),
           const Text(
-            'Tell us some informations about yourself to organize the feed for you.',
+            'Choose a few preferences so we can show you the cars, brands, and colors you care about most.',
             style: AppTextStyles.bodyMuted,
           ),
           const SizedBox(height: 28),
@@ -70,7 +73,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           ),
           const SizedBox(height: 20),
           AppSelectField<String>(
-            label: 'Favourite Brand',
+            label: 'Favorite Brand',
             value: _favouriteBrand,
             options: _favouriteBrandOptions,
             onChanged: (value) {
@@ -92,7 +95,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           ),
           const SizedBox(height: 20),
           AppSelectField<String>(
-            label: 'Favourite Color',
+            label: 'Favorite Color',
             value: _favouriteColor,
             options: _favouriteColorOptions,
             onChanged: (value) {
