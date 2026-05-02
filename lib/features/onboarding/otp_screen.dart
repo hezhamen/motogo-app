@@ -81,9 +81,11 @@ class _OtpScreenState extends State<OtpScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Verify your phone number',
-            style: AppTextStyles.sectionTitle,
+            style: AppTextStyles.sectionTitle.copyWith(
+              color: context.appTextPrimary,
+            ),
           ),
           const SizedBox(height: 6),
           _VerificationMessage(
@@ -91,7 +93,12 @@ class _OtpScreenState extends State<OtpScreen> {
             onEditNumber: _editNumber,
           ),
           const SizedBox(height: 28),
-          const Text('Verification code', style: AppTextStyles.label),
+          Text(
+            'Verification code',
+            style: AppTextStyles.label.copyWith(
+              color: context.appTextSecondary,
+            ),
+          ),
           const SizedBox(height: 12),
           _OtpCodeInput(controller: _codeController, focusNode: _codeFocusNode),
           const SizedBox(height: 12),
@@ -115,7 +122,9 @@ class _VerificationMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: AppTextStyles.bodyMuted,
+        style: AppTextStyles.bodyMuted.copyWith(
+          color: context.appTextSecondary,
+        ),
         children: [
           const TextSpan(text: 'We sent a 6-digit code to '),
           TextSpan(text: '$phoneNumber. '),
@@ -124,9 +133,11 @@ class _VerificationMessage extends StatelessWidget {
             baseline: TextBaseline.alphabetic,
             child: GestureDetector(
               onTap: onEditNumber,
-              child: const Text(
+              child: Text(
                 'Change number',
-                style: AppTextStyles.inlineAction,
+                style: AppTextStyles.inlineAction.copyWith(
+                  color: context.appTextPrimary,
+                ),
               ),
             ),
           ),
@@ -207,12 +218,14 @@ class _ResendCodePrompt extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Icon(LucideIcons.info, size: 16, color: AppColors.textPrimary),
+        Icon(LucideIcons.info, size: 16, color: context.appTextPrimary),
         const SizedBox(width: AppSpacing.xs),
         Expanded(
           child: RichText(
             text: TextSpan(
-              style: AppTextStyles.label,
+              style: AppTextStyles.label.copyWith(
+                color: context.appTextSecondary,
+              ),
               children: [
                 const TextSpan(text: 'Didn’t receive a code? '),
                 WidgetSpan(
@@ -220,9 +233,11 @@ class _ResendCodePrompt extends StatelessWidget {
                   baseline: TextBaseline.alphabetic,
                   child: GestureDetector(
                     onTap: onResend,
-                    child: const Text(
+                    child: Text(
                       'Send again',
-                      style: AppTextStyles.inlineActionSmall,
+                      style: AppTextStyles.inlineActionSmall.copyWith(
+                        color: context.appTextPrimary,
+                      ),
                     ),
                   ),
                 ),

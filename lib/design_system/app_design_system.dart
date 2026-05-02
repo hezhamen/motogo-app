@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const background = Color(0xFF101010);
+  static const lightBackground = Color(0xFFE9EAEE);
+  static const lightSurface = Color(0xFFF6F7FA);
+  static const lightSurfaceRaised = Color(0xFFFFFFFF);
+  static const lightTextPrimary = Color(0xFF17181B);
+  static const lightTextSecondary = Color(0xB317181B);
+  static const lightTextTertiary = Color(0x7317181B);
+  static const lightOutlineSubtle = Color(0x1F17181B);
   static const surface = Color(0xFF1C1C1E);
   static const surfaceRaised = Color(0xFF27272A);
   static const textPrimary = Color(0xFFF8F8F8);
@@ -13,6 +20,30 @@ class AppColors {
   static const progressActive = Color(0xFFFFFFFF);
   static const progressInactive = Color(0xFF3D3D40);
   static const accent = Color(0xFFFF1A1A);
+}
+
+extension AppThemeColors on BuildContext {
+  ColorScheme get colorScheme => Theme.of(this).colorScheme;
+
+  Color get appBackground => Theme.of(this).scaffoldBackgroundColor;
+
+  Color get appSurface => colorScheme.surface;
+
+  Color get appSurfaceRaised => colorScheme.surfaceContainerHighest;
+
+  Color get appTextPrimary => colorScheme.onSurface;
+
+  Color get appTextSecondary => colorScheme.onSurface.withValues(alpha: 0.78);
+
+  Color get appTextTertiary => colorScheme.onSurface.withValues(alpha: 0.48);
+
+  Color get appOutlineSubtle => colorScheme.outlineVariant;
+
+  Color get appButtonPrimary => colorScheme.primary;
+
+  Color get appButtonOnPrimary => colorScheme.onPrimary;
+
+  Color get appAccent => colorScheme.error;
 }
 
 class AppSpacing {
@@ -130,16 +161,51 @@ class AppTextStyles {
   );
 }
 
-ThemeData buildAppTheme() {
+ThemeData buildAppTheme({required Brightness brightness}) {
+  final bool isDark = brightness == Brightness.dark;
+  final Color background = isDark
+      ? AppColors.background
+      : AppColors.lightBackground;
+  final Color surface = isDark ? AppColors.surface : AppColors.lightSurface;
+  final Color surfaceRaised = isDark
+      ? AppColors.surfaceRaised
+      : AppColors.lightSurfaceRaised;
+  final Color textPrimary = isDark
+      ? AppColors.textPrimary
+      : AppColors.lightTextPrimary;
+  final Color outlineSubtle = isDark
+      ? AppColors.outlineSubtle
+      : AppColors.lightOutlineSubtle;
+  final Color primary = isDark
+      ? AppColors.buttonPrimary
+      : AppColors.lightTextPrimary;
+  final Color onPrimary = isDark
+      ? AppColors.buttonOnPrimary
+      : AppColors.lightSurfaceRaised;
+
   return ThemeData(
-    scaffoldBackgroundColor: AppColors.background,
+    scaffoldBackgroundColor: background,
     fontFamily: 'Inter',
     useMaterial3: true,
-    colorScheme: const ColorScheme.dark(
-      primary: AppColors.buttonPrimary,
-      onPrimary: AppColors.buttonOnPrimary,
-      surface: AppColors.surface,
-      onSurface: AppColors.textPrimary,
+    brightness: brightness,
+    colorScheme:
+        ColorScheme.fromSeed(
+          seedColor: AppColors.accent,
+          brightness: brightness,
+        ).copyWith(
+          primary: primary,
+          onPrimary: onPrimary,
+          surface: surface,
+          surfaceContainerHighest: surfaceRaised,
+          onSurface: textPrimary,
+          outlineVariant: outlineSubtle,
+          error: AppColors.accent,
+          onError: Colors.white,
+        ),
+    iconTheme: IconThemeData(color: textPrimary),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: textPrimary,
+      selectionColor: AppColors.accent.withValues(alpha: 0.28),
     ),
   );
 }

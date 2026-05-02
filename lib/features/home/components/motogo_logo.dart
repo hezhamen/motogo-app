@@ -17,16 +17,16 @@ class MotogoLogo extends StatelessWidget {
     );
 
     return RichText(
-      text: const TextSpan(
+      text: TextSpan(
         style: logoStyle,
         children: [
           TextSpan(
             text: 'MOTO',
-            style: TextStyle(color: AppColors.textPrimary),
+            style: TextStyle(color: context.appTextPrimary),
           ),
           TextSpan(
             text: 'GO',
-            style: TextStyle(color: AppColors.accent),
+            style: TextStyle(color: context.appAccent),
           ),
         ],
       ),

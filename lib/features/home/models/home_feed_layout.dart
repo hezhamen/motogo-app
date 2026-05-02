@@ -1,0 +1,1 @@
+enum HomeFeedLayout { grid, feed }

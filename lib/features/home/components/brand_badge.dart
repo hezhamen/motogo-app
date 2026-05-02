@@ -22,9 +22,9 @@ class BrandBadge extends StatelessWidget {
               width: 54,
               height: 54,
               alignment: Alignment.center,
-              color: AppColors.surfaceRaised,
+              color: context.appSurfaceRaised,
               borderRadius: 27,
-              borderColor: AppColors.outlineSubtle,
+              borderColor: context.appOutlineSubtle,
               child: Image.network(
                 brand.logoUrl,
                 width: brand.logoSize.width,
@@ -40,7 +40,9 @@ class BrandBadge extends StatelessWidget {
               brand.name,
               maxLines: 1,
               overflow: TextOverflow.visible,
-              style: AppTextStyles.caption,
+              style: AppTextStyles.caption.copyWith(
+                color: context.appTextSecondary,
+              ),
             ),
           ],
         ),

@@ -31,12 +31,79 @@ class AppPrimaryButton extends StatelessWidget {
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: AppColors.buttonPrimary,
+              backgroundColor: context.appButtonPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.button),
               ),
             ),
-            child: Text(label, style: AppTextStyles.button),
+            child: Text(
+              label,
+              style: AppTextStyles.button.copyWith(
+                color: context.appButtonOnPrimary,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AppFlowScaffold extends StatelessWidget {
+  const AppFlowScaffold({
+    super.key,
+    required this.activeStep,
+    required this.body,
+    this.footer,
+    this.totalSteps = 3,
+    this.backgroundColor,
+    this.onBack,
+    this.horizontalPadding = AppSpacing.lg,
+  });
+
+  final int activeStep;
+  final int totalSteps;
+  final Widget body;
+  final Widget? footer;
+  final Color? backgroundColor;
+  final VoidCallback? onBack;
+  final double horizontalPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor ?? context.appBackground,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Column(
+              children: [
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: onBack ?? () => Navigator.of(context).maybePop(),
+                    icon: const Icon(LucideIcons.arrowLeft, size: 18),
+                    style: IconButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                OnboardingProgress(
+                  activeStep: activeStep,
+                  totalSteps: totalSteps,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                Expanded(child: body),
+                if (footer != null) ...[const SizedBox(height: 16), footer!],
+              ],
+            ),
           ),
         ),
       ),
@@ -52,7 +119,7 @@ class AppSurface extends StatelessWidget {
     this.width,
     this.padding,
     this.alignment,
-    this.color = AppColors.surface,
+    this.color,
     this.borderRadius = AppRadius.card,
     this.borderColor,
     this.clipBehavior = Clip.none,
@@ -63,7 +130,7 @@ class AppSurface extends StatelessWidget {
   final double? width;
   final EdgeInsetsGeometry? padding;
   final AlignmentGeometry? alignment;
-  final Color color;
+  final Color? color;
   final double borderRadius;
   final Color? borderColor;
   final Clip clipBehavior;
@@ -77,7 +144,7 @@ class AppSurface extends StatelessWidget {
       alignment: alignment,
       clipBehavior: clipBehavior,
       decoration: BoxDecoration(
-        color: color,
+        color: color ?? context.appSurface,
         borderRadius: BorderRadius.circular(borderRadius),
         border: borderColor == null ? null : Border.all(color: borderColor!),
       ),
@@ -103,7 +170,10 @@ class AppFormFieldCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.label),
+        Text(
+          label,
+          style: AppTextStyles.label.copyWith(color: context.appTextSecondary),
+        ),
         const SizedBox(height: AppSpacing.sm),
         AppSurface(
           width: double.infinity,
@@ -138,8 +208,8 @@ class AppTextField extends StatelessWidget {
       initialValue: initialValue,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      style: style,
-      cursorColor: AppColors.textPrimary,
+      style: style.copyWith(color: context.appTextPrimary),
+      cursorColor: context.appTextPrimary,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: const InputDecoration(
         border: InputBorder.none,
@@ -167,7 +237,9 @@ class AppOtpCell extends StatelessWidget {
       child: Text(
         value,
         style: AppTextStyles.otpDigit.copyWith(
-          color: isPlaceholder ? AppColors.textTertiary : AppColors.textPrimary,
+          color: isPlaceholder
+              ? context.appTextTertiary
+              : context.appTextPrimary,
         ),
       ),
     );
@@ -179,11 +251,13 @@ class AppBottomNavigationItem {
     required this.icon,
     required this.label,
     this.isSelected = false,
+    this.onTap,
   });
 
   final IconData icon;
   final String label;
   final bool isSelected;
+  final VoidCallback? onTap;
 }
 
 class AppBottomNavigation extends StatelessWidget {
@@ -191,12 +265,12 @@ class AppBottomNavigation extends StatelessWidget {
     super.key,
     required this.items,
     this.height,
-    this.backgroundColor = AppColors.surfaceRaised,
+    this.backgroundColor,
   });
 
   final List<AppBottomNavigationItem> items;
   final double? height;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -208,14 +282,7 @@ class AppBottomNavigation extends StatelessWidget {
         bottom: MediaQuery.paddingOf(context).bottom,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 22,
-            offset: Offset(0, -6),
-          ),
-        ],
+        color: backgroundColor ?? context.appSurfaceRaised,
       ),
       child: Row(
         children: [
@@ -234,8 +301,8 @@ class _AppNavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = item.isSelected
-        ? AppColors.textPrimary
-        : AppColors.textPrimary.withValues(alpha: 0.55);
+        ? context.appTextPrimary
+        : context.appTextPrimary.withValues(alpha: 0.55);
 
     return Semantics(
       label: item.label,
@@ -244,7 +311,16 @@ class _AppNavigationItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 36, child: Icon(item.icon, size: 24, color: color)),
+          SizedBox(
+            height: 36,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: item.onTap,
+                child: Icon(item.icon, size: 24, color: color),
+              ),
+            ),
+          ),
           const SizedBox(height: 6),
           Text(
             item.label,
@@ -395,9 +471,9 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
                   width: _menuWidth,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: context.appSurface,
                       borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: AppColors.outlineSubtle),
+                      border: Border.all(color: context.appOutlineSubtle),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(AppSpacing.xs),
@@ -455,12 +531,17 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(selectedOption.label, style: AppTextStyles.value),
+                  child: Text(
+                    selectedOption.label,
+                    style: AppTextStyles.value.copyWith(
+                      color: context.appTextPrimary,
+                    ),
+                  ),
                 ),
                 Icon(
                   _isOpen ? LucideIcons.chevronUp : LucideIcons.chevronDown,
                   size: 18,
-                  color: AppColors.textPrimary,
+                  color: context.appTextPrimary,
                 ),
               ],
             ),
@@ -485,7 +566,7 @@ class _SelectMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isSelected ? AppColors.surfaceRaised : Colors.transparent,
+      color: isSelected ? context.appSurfaceRaised : Colors.transparent,
       borderRadius: BorderRadius.circular(AppRadius.card - 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.card - 4),
@@ -497,12 +578,19 @@ class _SelectMenuItem extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Expanded(child: Text(label, style: AppTextStyles.value)),
+              Expanded(
+                child: Text(
+                  label,
+                  style: AppTextStyles.value.copyWith(
+                    color: context.appTextPrimary,
+                  ),
+                ),
+              ),
               if (isSelected)
-                const Icon(
+                Icon(
                   LucideIcons.check,
                   size: 16,
-                  color: AppColors.textPrimary,
+                  color: context.appTextPrimary,
                 ),
             ],
           ),
@@ -531,9 +619,7 @@ class OnboardingProgress extends StatelessWidget {
           child: Container(
             margin: EdgeInsets.only(right: index == totalSteps - 1 ? 0 : 11),
             height: 2,
-            color: isActive
-                ? AppColors.progressActive
-                : AppColors.progressInactive,
+            color: isActive ? context.appTextPrimary : context.appTextTertiary,
           ),
         );
       }),

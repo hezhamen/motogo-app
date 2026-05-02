@@ -9,12 +9,12 @@ class VehicleCard extends StatelessWidget {
     super.key,
     required this.vehicle,
     this.width = 194,
-    this.backgroundColor = AppColors.surface,
+    this.backgroundColor,
   });
 
   final HomeVehicle vehicle;
   final double width;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class VehicleCard extends StatelessWidget {
         width: width,
         height: 202,
         child: Material(
-          color: backgroundColor,
+          color: backgroundColor ?? context.appSurface,
           borderRadius: BorderRadius.circular(AppRadius.card),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
@@ -41,9 +41,7 @@ class VehicleCard extends StatelessWidget {
                         vehicle.imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const ColoredBox(
-                            color: AppColors.surfaceRaised,
-                          );
+                          return ColoredBox(color: context.appSurfaceRaised);
                         },
                       ),
                       const DecoratedBox(
@@ -94,6 +92,7 @@ class VehicleCard extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.value.copyWith(
+                              color: context.appTextPrimary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -101,6 +100,7 @@ class VehicleCard extends StatelessWidget {
                         Text(
                           vehicle.price,
                           style: AppTextStyles.value.copyWith(
+                            color: context.appTextPrimary,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -128,13 +128,13 @@ class _VehiclePill extends StatelessWidget {
       height: 20,
       padding: const EdgeInsets.symmetric(horizontal: 7),
       alignment: Alignment.center,
-      color: AppColors.surfaceRaised,
+      color: context.appSurfaceRaised,
       borderRadius: 24,
-      borderColor: AppColors.outlineSubtle,
+      borderColor: context.appOutlineSubtle,
       child: Text(
         label,
         style: AppTextStyles.caption.copyWith(
-          color: AppColors.textPrimary,
+          color: context.appTextPrimary,
           fontSize: 8.4,
           letterSpacing: -0.25,
           fontWeight: FontWeight.w500,

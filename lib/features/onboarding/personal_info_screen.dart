@@ -51,14 +51,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Personalize your feed',
-            style: AppTextStyles.sectionTitle,
+            style: AppTextStyles.sectionTitle.copyWith(
+              color: context.appTextPrimary,
+            ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Choose a few preferences so we can show you the cars, brands, and colors you care about most.',
-            style: AppTextStyles.bodyMuted,
+            style: AppTextStyles.bodyMuted.copyWith(
+              color: context.appTextSecondary,
+            ),
           ),
           const SizedBox(height: 28),
           AppSelectField<String>(

@@ -56,11 +56,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Create your account', style: AppTextStyles.title),
+          Text(
+            'Create your account',
+            style: AppTextStyles.title.copyWith(color: context.appTextPrimary),
+          ),
           const SizedBox(height: 14),
-          const Text(
+          Text(
             'Set up your profile to get started with MotoGo and personalize your experience.',
-            style: AppTextStyles.bodyMuted,
+            style: AppTextStyles.bodyMuted.copyWith(
+              color: context.appTextSecondary,
+            ),
           ),
           const SizedBox(height: 22),
           const AppFormFieldCard(
@@ -85,12 +90,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     errorBuilder: (context, error, stackTrace) => Container(
                       width: 24,
                       height: 24,
-                      color: AppColors.progressInactive,
+                      color: context.appTextTertiary,
                     ),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                const Text('+964', style: AppTextStyles.bodyMuted),
+                Text(
+                  '+964',
+                  style: AppTextStyles.bodyMuted.copyWith(
+                    color: context.appTextSecondary,
+                  ),
+                ),
                 const SizedBox(width: AppSpacing.sm),
                 const Expanded(
                   child: AppTextField(
@@ -104,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          const AppFormFieldCard(
+          AppFormFieldCard(
             label: 'Email Address',
             helper: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,18 +122,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Icon(
                   LucideIcons.info,
                   size: 16,
-                  color: AppColors.textSecondary,
+                  color: context.appTextSecondary,
                 ),
-                SizedBox(width: AppSpacing.xs),
+                const SizedBox(width: AppSpacing.xs),
                 Expanded(
                   child: Text(
                     'Optional. We\'ll use your email to send account updates, offers, and important news.',
-                    style: AppTextStyles.caption,
+                    style: AppTextStyles.caption.copyWith(
+                      color: context.appTextSecondary,
+                    ),
                   ),
                 ),
               ],
             ),
-            child: AppTextField(
+            child: const AppTextField(
               initialValue: 'hezhamen@gmail.com',
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
@@ -151,13 +163,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Expanded(
                     child: Text(
                       _formatDate(_selectedDateOfBirth),
-                      style: AppTextStyles.value,
+                      style: AppTextStyles.value.copyWith(
+                        color: context.appTextPrimary,
+                      ),
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     LucideIcons.calendarDays,
                     size: 18,
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ],
               ),

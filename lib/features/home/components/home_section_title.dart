@@ -12,6 +12,7 @@ class HomeSectionTitle extends StatelessWidget {
     return Text(
       title,
       style: AppTextStyles.value.copyWith(
+        color: context.appTextPrimary,
         fontWeight: FontWeight.w600,
         letterSpacing: -0.42,
       ),
