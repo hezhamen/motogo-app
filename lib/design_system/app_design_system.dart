@@ -4,7 +4,9 @@ class AppColors {
   static const background = Color(0xFFFFFFFF);
   static const textPrimary = Color(0xFF111111);
   static const textSecondary = Color(0x99000000);
+  static const textTertiary = Color(0x66000000);
   static const surfaceField = Color(0xFFF5F5F5);
+  static const outlineSubtle = Color(0x14000000);
   static const buttonPrimary = Color(0xFF000000);
   static const buttonOnPrimary = Color(0xFFFFFFFF);
   static const progressActive = Color(0xFF111111);
@@ -41,6 +43,15 @@ class AppTextStyles {
     height: 1.15,
   );
 
+  static const TextStyle sectionTitle = TextStyle(
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    fontSize: 20,
+    color: AppColors.textPrimary,
+    letterSpacing: -0.6,
+    height: 1.15,
+  );
+
   static const TextStyle bodyMuted = TextStyle(
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
@@ -72,6 +83,31 @@ class AppTextStyles {
     fontSize: 16,
     color: AppColors.textPrimary,
     letterSpacing: -0.48,
+  );
+
+  static const TextStyle otpDigit = TextStyle(
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    fontSize: 24,
+    color: AppColors.textPrimary,
+    letterSpacing: -0.72,
+  );
+
+  static const TextStyle inlineAction = TextStyle(
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    color: AppColors.textPrimary,
+    letterSpacing: -0.42,
+    height: 1.2,
+  );
+
+  static const TextStyle inlineActionSmall = TextStyle(
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    fontSize: 12,
+    color: AppColors.textPrimary,
+    letterSpacing: -0.36,
   );
 
   static const TextStyle caption = TextStyle(
