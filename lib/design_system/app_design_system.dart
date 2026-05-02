@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const background = Color(0xFFFFFFFF);
-  static const textPrimary = Color(0xFF111111);
-  static const textSecondary = Color(0x99000000);
-  static const textTertiary = Color(0x66000000);
-  static const surfaceField = Color(0xFFF5F5F5);
-  static const outlineSubtle = Color(0x14000000);
-  static const buttonPrimary = Color(0xFF000000);
-  static const buttonOnPrimary = Color(0xFFFFFFFF);
-  static const progressActive = Color(0xFF111111);
-  static const progressInactive = Color(0xFFCACACA);
+  static const background = Color(0xFF101010);
+  static const surface = Color(0xFF1C1C1E);
+  static const surfaceRaised = Color(0xFF27272A);
+  static const textPrimary = Color(0xFFF8F8F8);
+  static const textSecondary = Color(0xCCFFFFFF);
+  static const textTertiary = Color(0x80FFFFFF);
+  static const outlineSubtle = Color(0x1FFFFFFF);
+  static const buttonPrimary = Color(0xFFFFFFFF);
+  static const buttonOnPrimary = Color(0xFF111111);
+  static const progressActive = Color(0xFFFFFFFF);
+  static const progressInactive = Color(0xFF3D3D40);
+  static const accent = Color(0xFFFF1A1A);
 }
 
 class AppSpacing {
@@ -133,10 +135,10 @@ ThemeData buildAppTheme() {
     scaffoldBackgroundColor: AppColors.background,
     fontFamily: 'Inter',
     useMaterial3: true,
-    colorScheme: const ColorScheme.light(
+    colorScheme: const ColorScheme.dark(
       primary: AppColors.buttonPrimary,
       onPrimary: AppColors.buttonOnPrimary,
-      surface: AppColors.background,
+      surface: AppColors.surface,
       onSurface: AppColors.textPrimary,
     ),
   );

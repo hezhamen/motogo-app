@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(height: 22),
           const AppFormFieldCard(
             label: 'Full Name',
-            child: _RegisterTextField(
+            child: AppTextField(
               initialValue: 'Hezha Amen',
               textInputAction: TextInputAction.next,
             ),
@@ -93,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const Text('+964', style: AppTextStyles.bodyMuted),
                 const SizedBox(width: AppSpacing.sm),
                 const Expanded(
-                  child: _RegisterTextField(
+                  child: AppTextField(
                     initialValue: '777 451 6006',
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
@@ -123,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
-            child: _RegisterTextField(
+            child: AppTextField(
               initialValue: 'hezhamen@gmail.com',
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
@@ -165,33 +165,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _RegisterTextField extends StatelessWidget {
-  const _RegisterTextField({
-    required this.initialValue,
-    this.keyboardType,
-    this.textInputAction,
-    this.style = AppTextStyles.value,
-  });
-
-  final String initialValue;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final TextStyle style;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      initialValue: initialValue,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      style: style,
-      cursorColor: AppColors.textPrimary,
-      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-      decoration: InputDecoration(border: InputBorder.none, isCollapsed: true),
     );
   }
 }

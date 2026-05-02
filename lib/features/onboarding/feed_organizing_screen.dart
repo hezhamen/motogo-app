@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
+import 'package:motogo_app/features/home/home_screen.dart';
 
 /// Shows the final onboarding state while the feed is prepared.
 class FeedOrganizingScreen extends StatelessWidget {
@@ -50,7 +51,14 @@ class FeedOrganizingScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              AppPrimaryButton(label: 'Start exploring', onPressed: () {}),
+              AppPrimaryButton(
+                label: 'Start exploring',
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(builder: (_) => const HomeScreen()),
+                  );
+                },
+              ),
             ],
           ),
         ),

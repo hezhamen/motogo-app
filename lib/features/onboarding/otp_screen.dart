@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
+import 'package:motogo_app/design_system/app_widgets.dart';
 
 /// Lets a user enter the phone verification code sent during registration.
 class OtpScreen extends StatefulWidget {
@@ -158,7 +159,7 @@ class _OtpCodeInput extends StatelessWidget {
                     return Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(right: index == 5 ? 0 : 10),
-                        child: _OtpCodeCell(
+                        child: AppOtpCell(
                           value: index < value.text.length
                               ? value.text[index]
                               : '-',
@@ -190,31 +191,6 @@ class _OtpCodeInput extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _OtpCodeCell extends StatelessWidget {
-  const _OtpCodeCell({required this.value, required this.isPlaceholder});
-
-  final String value;
-  final bool isPlaceholder;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 61,
-      decoration: BoxDecoration(
-        color: AppColors.surfaceField,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        value,
-        style: AppTextStyles.otpDigit.copyWith(
-          color: isPlaceholder ? AppColors.textTertiary : AppColors.textPrimary,
         ),
       ),
     );

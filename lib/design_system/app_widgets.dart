@@ -44,6 +44,48 @@ class AppPrimaryButton extends StatelessWidget {
   }
 }
 
+class AppSurface extends StatelessWidget {
+  const AppSurface({
+    super.key,
+    required this.child,
+    this.height,
+    this.width,
+    this.padding,
+    this.alignment,
+    this.color = AppColors.surface,
+    this.borderRadius = AppRadius.card,
+    this.borderColor,
+    this.clipBehavior = Clip.none,
+  });
+
+  final Widget child;
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry? padding;
+  final AlignmentGeometry? alignment;
+  final Color color;
+  final double borderRadius;
+  final Color? borderColor;
+  final Clip clipBehavior;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      alignment: alignment,
+      clipBehavior: clipBehavior,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: borderColor == null ? null : Border.all(color: borderColor!),
+      ),
+      child: child,
+    );
+  }
+}
+
 class AppFormFieldCard extends StatelessWidget {
   const AppFormFieldCard({
     super.key,
@@ -63,19 +105,160 @@ class AppFormFieldCard extends StatelessWidget {
       children: [
         Text(label, style: AppTextStyles.label),
         const SizedBox(height: AppSpacing.sm),
-        Container(
+        AppSurface(
           width: double.infinity,
           height: 61,
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceField,
-            borderRadius: BorderRadius.circular(AppRadius.card),
-          ),
           alignment: Alignment.centerLeft,
           child: child,
         ),
         if (helper != null) ...[const SizedBox(height: AppSpacing.xs), helper!],
       ],
+    );
+  }
+}
+
+class AppTextField extends StatelessWidget {
+  const AppTextField({
+    super.key,
+    required this.initialValue,
+    this.keyboardType,
+    this.textInputAction,
+    this.style = AppTextStyles.value,
+  });
+
+  final String initialValue;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      initialValue: initialValue,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      style: style,
+      cursorColor: AppColors.textPrimary,
+      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        isCollapsed: true,
+      ),
+    );
+  }
+}
+
+class AppOtpCell extends StatelessWidget {
+  const AppOtpCell({
+    super.key,
+    required this.value,
+    required this.isPlaceholder,
+  });
+
+  final String value;
+  final bool isPlaceholder;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppSurface(
+      height: 61,
+      alignment: Alignment.center,
+      child: Text(
+        value,
+        style: AppTextStyles.otpDigit.copyWith(
+          color: isPlaceholder ? AppColors.textTertiary : AppColors.textPrimary,
+        ),
+      ),
+    );
+  }
+}
+
+class AppBottomNavigationItem {
+  const AppBottomNavigationItem({
+    required this.icon,
+    required this.label,
+    this.isSelected = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+}
+
+class AppBottomNavigation extends StatelessWidget {
+  const AppBottomNavigation({
+    super.key,
+    required this.items,
+    this.height,
+    this.backgroundColor = AppColors.surfaceRaised,
+  });
+
+  final List<AppBottomNavigationItem> items;
+  final double? height;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height ?? MediaQuery.paddingOf(context).bottom + 91,
+      padding: EdgeInsets.only(
+        left: AppSpacing.md,
+        right: AppSpacing.md,
+        bottom: MediaQuery.paddingOf(context).bottom,
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x66000000),
+            blurRadius: 22,
+            offset: Offset(0, -6),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          for (final item in items) Expanded(child: _AppNavigationItem(item)),
+        ],
+      ),
+    );
+  }
+}
+
+class _AppNavigationItem extends StatelessWidget {
+  const _AppNavigationItem(this.item);
+
+  final AppBottomNavigationItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = item.isSelected
+        ? AppColors.textPrimary
+        : AppColors.textPrimary.withValues(alpha: 0.55);
+
+    return Semantics(
+      label: item.label,
+      selected: item.isSelected,
+      button: true,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 36, child: Icon(item.icon, size: 24, color: color)),
+          const SizedBox(height: 6),
+          Text(
+            item.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.caption.copyWith(
+              color: color,
+              fontSize: 11.5,
+              letterSpacing: item.isSelected ? -0.23 : -0.34,
+              fontWeight: item.isSelected ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -212,7 +395,7 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
                   width: _menuWidth,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceField,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(AppRadius.card),
                       border: Border.all(color: AppColors.outlineSubtle),
                     ),
@@ -302,7 +485,7 @@ class _SelectMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isSelected ? const Color(0xFFFFFFFF) : Colors.transparent,
+      color: isSelected ? AppColors.surfaceRaised : Colors.transparent,
       borderRadius: BorderRadius.circular(AppRadius.card - 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.card - 4),
