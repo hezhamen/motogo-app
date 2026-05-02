@@ -213,23 +213,30 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
           const SizedBox(height: 16),
           _LabeledField(
             label: 'Trim',
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                for (final String trim in _trimOptions)
-                  _SelectablePill(
-                    label: trim,
-                    width: 120,
-                    height: 40,
-                    selected: _selectedTrim == trim,
-                    onTap: () {
-                      setState(() {
-                        _selectedTrim = trim;
-                      });
-                    },
-                  ),
-              ],
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                const double spacing = 10;
+                final double itemWidth = (constraints.maxWidth - spacing) / 2;
+
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: spacing,
+                  children: [
+                    for (final String trim in _trimOptions)
+                      _SelectablePill(
+                        label: trim,
+                        width: itemWidth,
+                        height: 40,
+                        selected: _selectedTrim == trim,
+                        onTap: () {
+                          setState(() {
+                            _selectedTrim = trim;
+                          });
+                        },
+                      ),
+                  ],
+                );
+              },
             ),
           ),
           const SizedBox(height: 16),
