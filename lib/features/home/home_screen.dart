@@ -26,29 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: context.appBackground,
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(child: SizedBox(height: headerHeight)),
-              const SliverToBoxAdapter(child: PopularBrandsSection()),
-              const SliverToBoxAdapter(child: SizedBox(height: 16)),
-              SliverToBoxAdapter(child: SponsoredSection(layout: _feedLayout)),
-              SliverPadding(
-                padding: EdgeInsets.only(bottom: bottomNavHeight + 20),
-              ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: HomeHeader(
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _HomeHeaderDelegate(
               height: headerHeight,
               feedLayout: _feedLayout,
-              onFeedLayoutChanged: (layout) {
-                setState(() {
-                  _feedLayout = layout;
-                });
-              },
+              onFeedLayoutChanged: (layout) => setState(() {
+                _feedLayout = layout;
+              }),
               onCreateListing: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(builder: (_) => const PostCarFlow()),
@@ -56,8 +43,96 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _PopularBrandsDelegate(
+              backgroundColor: context.appBackground,
+            ),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          SliverToBoxAdapter(child: SponsoredSection(layout: _feedLayout)),
+          SliverPadding(padding: EdgeInsets.only(bottom: bottomNavHeight + 20)),
         ],
       ),
     );
+  }
+}
+
+class _HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _HomeHeaderDelegate({
+    required this.height,
+    required this.feedLayout,
+    required this.onFeedLayoutChanged,
+    required this.onCreateListing,
+  });
+
+  final double height;
+  final HomeFeedLayout feedLayout;
+  final ValueChanged<HomeFeedLayout> onFeedLayoutChanged;
+  final VoidCallback onCreateListing;
+
+  @override
+  double get minExtent => height;
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return HomeHeader(
+      height: height,
+      feedLayout: feedLayout,
+      onFeedLayoutChanged: onFeedLayoutChanged,
+      onCreateListing: onCreateListing,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _HomeHeaderDelegate oldDelegate) {
+    return oldDelegate.height != height ||
+        oldDelegate.feedLayout != feedLayout ||
+        oldDelegate.onFeedLayoutChanged != onFeedLayoutChanged ||
+        oldDelegate.onCreateListing != onCreateListing;
+  }
+}
+
+class _PopularBrandsDelegate extends SliverPersistentHeaderDelegate {
+  _PopularBrandsDelegate({required this.backgroundColor});
+
+  final Color backgroundColor;
+
+  // Note: keep a little headroom to avoid sub-pixel overflow on some devices.
+  // Expanded content ~ (topPadding 16) + (listHeight 82) = 98.
+  // Collapsed content ~ (topPadding 10) + (listHeight 56) = 66.
+  static const double _expandedHeight = 100;
+  static const double _collapsedHeight = 66;
+
+  @override
+  double get minExtent => _collapsedHeight;
+
+  @override
+  double get maxExtent => _expandedHeight;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final double t = (shrinkOffset / (maxExtent - minExtent)).clamp(0, 1);
+
+    return ColoredBox(
+      color: backgroundColor,
+      child: PopularBrandsSection(collapseT: t),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _PopularBrandsDelegate oldDelegate) {
+    return oldDelegate.backgroundColor != backgroundColor;
   }
 }

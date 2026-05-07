@@ -1,15 +1,18 @@
 import 'dart:developer';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/features/home/components/brand_badge.dart';
-import 'package:motogo_app/features/home/components/home_section_title.dart';
 import 'package:motogo_app/features/home/models/home_data.dart';
 import 'package:motogo_app/features/vehicle_catalog/vehicle_catalog_repository.dart';
 
 class PopularBrandsSection extends StatefulWidget {
-  const PopularBrandsSection({super.key});
+  const PopularBrandsSection({super.key, this.collapseT = 0});
+
+  /// 0 = expanded (show label), 1 = collapsed (hide label).
+  final double collapseT;
 
   @override
   State<PopularBrandsSection> createState() => _PopularBrandsSectionState();
@@ -26,38 +29,45 @@ class _PopularBrandsSectionState extends State<PopularBrandsSection> {
 
   @override
   Widget build(BuildContext context) {
+    final double t = widget.collapseT.clamp(0, 1);
+    final double listHeight = ui.lerpDouble(82, 56, t)!;
+    final double topPadding = ui.lerpDouble(AppSpacing.md, 10, t)!;
+    final double itemGap = ui.lerpDouble(14, 10, t)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: AppSpacing.md),
-          FutureBuilder<List<HomeBrand>>(
-            future: _popularBrandsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                log(
-                  'Popular brands load failed',
-                  error: snapshot.error,
-                  stackTrace: snapshot.stackTrace,
+          Padding(
+            padding: EdgeInsets.only(top: topPadding),
+            child: FutureBuilder<List<HomeBrand>>(
+              future: _popularBrandsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  log(
+                    'Popular brands load failed',
+                    error: snapshot.error,
+                    stackTrace: snapshot.stackTrace,
+                  );
+                }
+                final brands = snapshot.hasData && snapshot.data!.isNotEmpty
+                    ? snapshot.data!
+                    : HomeData.popularBrands;
+                return SizedBox(
+                  height: listHeight,
+                  child: ListView.separated(
+                    clipBehavior: Clip.none,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: brands.length,
+                    separatorBuilder: (_, _) => SizedBox(width: itemGap),
+                    itemBuilder: (context, index) {
+                      return BrandBadge(brand: brands[index], collapseT: t);
+                    },
+                  ),
                 );
-              }
-              final brands = snapshot.hasData && snapshot.data!.isNotEmpty
-                  ? snapshot.data!
-                  : HomeData.popularBrands;
-              return SizedBox(
-                height: 82,
-                child: ListView.separated(
-                  clipBehavior: Clip.none,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: brands.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 14),
-                  itemBuilder: (context, index) {
-                    return BrandBadge(brand: brands[index]);
-                  },
-                ),
-              );
-            },
+              },
+            ),
           ),
         ],
       ),
