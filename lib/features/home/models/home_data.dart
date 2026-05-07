@@ -22,6 +22,7 @@ class HomeBrand {
 
 class HomeVehicle {
   const HomeVehicle({
+    required this.brandName,
     required this.name,
     required this.price,
     required this.imageUrl,
@@ -29,6 +30,7 @@ class HomeVehicle {
     required this.brandLogoSize,
   });
 
+  final String brandName;
   final String name;
   final String price;
   final String imageUrl;
@@ -74,6 +76,7 @@ class HomeData {
 
   static const featuredVehicles = [
     HomeVehicle(
+      brandName: 'Nissan',
       name: 'Altima',
       price: r'$16,800',
       imageUrl: HomeAssets.altima,
@@ -81,6 +84,7 @@ class HomeData {
       brandLogoSize: Size(24, 20),
     ),
     HomeVehicle(
+      brandName: 'Ford',
       name: 'Explorer',
       price: r'$16,800',
       imageUrl: HomeAssets.explorer,
@@ -88,6 +92,7 @@ class HomeData {
       brandLogoSize: Size(40, 16),
     ),
     HomeVehicle(
+      brandName: 'Mitsubishi',
       name: 'Triton',
       price: r'$16,800',
       imageUrl: HomeAssets.triton,
@@ -95,6 +100,7 @@ class HomeData {
       brandLogoSize: Size(23, 20),
     ),
     HomeVehicle(
+      brandName: 'Mitsubishi',
       name: 'Outlander',
       price: r'$16,800',
       imageUrl: HomeAssets.outlander,
@@ -105,6 +111,7 @@ class HomeData {
 
   static const feedVehicles = [
     HomeVehicle(
+      brandName: 'Nissan',
       name: 'Altima',
       price: r'$16,800',
       imageUrl: HomeAssets.altima,
@@ -112,6 +119,7 @@ class HomeData {
       brandLogoSize: Size(24, 20),
     ),
     HomeVehicle(
+      brandName: 'Ford',
       name: 'Explorer',
       price: r'$16,800',
       imageUrl: HomeAssets.explorer,
@@ -119,6 +127,7 @@ class HomeData {
       brandLogoSize: Size(40, 16),
     ),
     HomeVehicle(
+      brandName: 'Mitsubishi',
       name: 'Triton',
       price: r'$16,800',
       imageUrl: HomeAssets.triton,
@@ -126,6 +135,7 @@ class HomeData {
       brandLogoSize: Size(23, 20),
     ),
     HomeVehicle(
+      brandName: 'Mitsubishi',
       name: 'Outlander',
       price: r'$16,800',
       imageUrl: HomeAssets.outlander,
@@ -133,6 +143,7 @@ class HomeData {
       brandLogoSize: Size(23, 20),
     ),
     HomeVehicle(
+      brandName: 'Toyota',
       name: 'Corolla',
       price: r'$16,800',
       imageUrl: HomeAssets.corolla,
@@ -140,6 +151,7 @@ class HomeData {
       brandLogoSize: Size(24, 20),
     ),
     HomeVehicle(
+      brandName: 'BMW',
       name: '520i',
       price: r'$16,800',
       imageUrl: HomeAssets.bmw,
@@ -147,6 +159,7 @@ class HomeData {
       brandLogoSize: Size(20, 20),
     ),
     HomeVehicle(
+      brandName: 'Mercedes',
       name: 'E-Class',
       price: r'$16,800',
       imageUrl: HomeAssets.mercedes,
@@ -154,6 +167,7 @@ class HomeData {
       brandLogoSize: Size(20, 20),
     ),
     HomeVehicle(
+      brandName: 'Mitsubishi',
       name: 'Outlander',
       price: r'$16,800',
       imageUrl: HomeAssets.outlander,

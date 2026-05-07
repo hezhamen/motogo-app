@@ -330,45 +330,49 @@ class _AppNavigationItem extends StatelessWidget {
       label: item.label,
       selected: item.isSelected,
       button: true,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 36,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: item.onTap,
-                splashFactory: NoSplash.splashFactory,
-                overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                child: Center(
-                  child: AnimatedScale(
-                    duration: const Duration(milliseconds: 180),
-                    curve: Curves.easeOutCubic,
-                    scale: item.isSelected ? 1.05 : 1,
-                    child: Icon(item.icon, size: 22, color: iconColor),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: item.onTap,
+          splashFactory: NoSplash.splashFactory,
+          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          child: SizedBox.expand(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 36,
+                  child: Center(
+                    child: AnimatedScale(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOutCubic,
+                      scale: item.isSelected ? 1.05 : 1,
+                      child: Icon(item.icon, size: 22, color: iconColor),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 6),
+                Text(
+                  item.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.caption.copyWith(
+                    color: iconColor,
+                    fontSize: 11.5,
+                    letterSpacing: item.isSelected ? -0.23 : -0.34,
+                    fontWeight: item.isSelected
+                        ? FontWeight.w600
+                        : FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            item.label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.caption.copyWith(
-              color: iconColor,
-              fontSize: 11.5,
-              letterSpacing: item.isSelected ? -0.23 : -0.34,
-              fontWeight: item.isSelected ? FontWeight.w600 : FontWeight.w400,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

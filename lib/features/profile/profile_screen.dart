@@ -89,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '+964 777 451 6006',
+                                _phoneNumber,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.value.copyWith(
@@ -101,7 +101,10 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        AppSurface(child: _LoggedInMenuItem(onTap: () {})),
+                        AppSurface(
+                          clipBehavior: Clip.hardEdge,
+                          child: _LoggedInMenuItem(onTap: () {}),
+                        ),
                         const SizedBox(height: 18),
                         Text(
                           'SHORTCUTS',
@@ -114,6 +117,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         AppSurface(
+                          clipBehavior: Clip.hardEdge,
                           child: Column(
                             children: [
                               _ActionRow(
@@ -148,6 +152,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         AppSurface(
+                          clipBehavior: Clip.hardEdge,
                           child: Column(
                             children: [
                               _ActionRow(
@@ -172,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         AppSurface(
-                          color: context.appSurfaceRaised,
+                          clipBehavior: Clip.hardEdge,
                           child: _ActionRow(
                             icon: Boxicons.bxs_log_out,
                             label: 'Log out',
@@ -217,6 +222,7 @@ class _ActionRow extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.card),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
@@ -264,6 +270,7 @@ class _LoggedInMenuItem extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.card),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,

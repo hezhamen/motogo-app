@@ -125,7 +125,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
   @override
   Widget build(BuildContext context) {
     final EdgeInsets viewPadding = MediaQuery.paddingOf(context);
-    final double headerHeight = viewPadding.top + 71;
+    final double headerHeight = viewPadding.top + 62;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -204,6 +204,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
           _DetailHeader(
             height: headerHeight,
             onBack: () => Navigator.of(context).maybePop(),
+            title: '${widget.vehicle.brandName} ${widget.vehicle.name}',
           ),
         ],
       ),
@@ -313,29 +314,60 @@ class _DetailSections extends StatelessWidget {
 }
 
 class _DetailHeader extends StatelessWidget {
-  const _DetailHeader({required this.height, required this.onBack});
+  const _DetailHeader({
+    required this.height,
+    required this.onBack,
+    required this.title,
+  });
 
   final double height;
   final VoidCallback onBack;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
       padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
+        left: 16,
+        right: 16,
         top: MediaQuery.paddingOf(context).top,
+        bottom: 8,
       ),
       decoration: const BoxDecoration(color: Colors.white),
       child: Align(
-        alignment: Alignment.bottomLeft,
+        alignment: Alignment.bottomCenter,
         child: SizedBox(
           height: 44,
-          child: _HeaderCircleButton(
-            semanticLabel: 'Back',
-            icon: Boxicons.bx_arrow_back,
-            onTap: onBack,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 44,
+                height: 44,
+                child: _HeaderCircleButton(
+                  semanticLabel: 'Back',
+                  icon: Boxicons.bx_arrow_back,
+                  onTap: onBack,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.valueLarge.copyWith(
+                    color: const Color(0xFF000000),
+                    fontSize: 16,
+                    letterSpacing: -0.4,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              const SizedBox.square(dimension: 44),
+            ],
           ),
         ),
       ),
@@ -424,16 +456,9 @@ class _HeroHeader extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SizedBox(
-                height: 25,
-                child: Center(child: _DotsIndicator(activeIndex: 1, count: 4)),
-              ),
-            ),
+            right: 16,
+            bottom: 12,
+            child: _DotsIndicator(activeIndex: 1, count: 4),
           ),
           Positioned(
             bottom: -32,
@@ -495,11 +520,12 @@ class _DotsIndicator extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(count, (i) {
         final bool active = i == activeIndex;
+        final double size = active ? 7 : 6;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 180),
           margin: EdgeInsets.only(right: i == count - 1 ? 0 : 6),
-          width: active ? 14 : 6,
-          height: 6,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: active ? 0.95 : 0.6),
             borderRadius: BorderRadius.circular(99),

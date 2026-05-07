@@ -50,7 +50,7 @@ class VehicleCard extends StatelessWidget {
     );
 
     return Semantics(
-      label: '${vehicle.name}, ${vehicle.price}',
+      label: '${vehicle.brandName} ${vehicle.name}, ${vehicle.price}',
       button: true,
       child: SizedBox(
         width: width,
@@ -109,7 +109,7 @@ class VehicleCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            vehicle.name,
+                            '${vehicle.brandName} ${vehicle.name}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.value.copyWith(

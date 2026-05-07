@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final EdgeInsets viewPadding = MediaQuery.paddingOf(context);
-    final double headerHeight = viewPadding.top + 74;
+    final double headerHeight = viewPadding.top + 64;
     final double bottomNavHeight = viewPadding.bottom + 91;
 
     return Scaffold(
