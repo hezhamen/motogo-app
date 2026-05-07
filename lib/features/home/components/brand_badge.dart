@@ -11,6 +11,26 @@ class BrandBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget logo = brand.isNetworkLogo
+        ? Image.network(
+            brand.logoUrl,
+            width: brand.logoSize.width,
+            height: brand.logoSize.height,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const SizedBox.shrink();
+            },
+          )
+        : Image.asset(
+            brand.logoUrl,
+            width: brand.logoSize.width,
+            height: brand.logoSize.height,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const SizedBox.shrink();
+            },
+          );
+
     return Semantics(
       label: brand.name,
       button: true,
@@ -25,15 +45,7 @@ class BrandBadge extends StatelessWidget {
               color: context.appSurfaceRaised,
               borderRadius: 27,
               borderColor: context.appOutlineSubtle,
-              child: Image.asset(
-                brand.logoUrl,
-                width: brand.logoSize.width,
-                height: brand.logoSize.height,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox.shrink();
-                },
-              ),
+              child: logo,
             ),
             const SizedBox(height: 8),
             Text(

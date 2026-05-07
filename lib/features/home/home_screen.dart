@@ -11,9 +11,7 @@ import 'package:motogo_app/features/onboarding/onboarding_flow.dart';
 
 /// Displays the Motogo home feed.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.onThemeModeChanged});
-
-  final ValueChanged<ThemeMode> onThemeModeChanged;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -54,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 alignment: Alignment.topCenter,
                 child: HomeHeader(
                   height: headerHeight,
-                  onThemeModeChanged: widget.onThemeModeChanged,
                   feedLayout: _feedLayout,
                   onFeedLayoutChanged: (layout) {
                     setState(() {
@@ -77,9 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onProfileTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
-                        builder: (_) => OnboardingFlow(
-                          onThemeModeChanged: widget.onThemeModeChanged,
-                        ),
+                        builder: (_) => const OnboardingFlow(),
                       ),
                     );
                   },

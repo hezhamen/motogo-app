@@ -5,11 +5,19 @@ class HomeBrand {
     required this.name,
     required this.logoUrl,
     required this.logoSize,
+    this.isNetworkLogo = false,
   });
+
+  HomeBrand.network({
+    required this.name,
+    required this.logoUrl,
+    required this.logoSize,
+  }) : isNetworkLogo = true;
 
   final String name;
   final String logoUrl;
   final Size logoSize;
+  final bool isNetworkLogo;
 }
 
 class HomeVehicle {

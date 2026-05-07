@@ -15,10 +15,10 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  String _currency = '\$';
+  final String _currency = '\$';
   String _price = '20,000';
   bool _hasFine = true;
-  String _fineCurrency = 'IQD';
+  final String _fineCurrency = 'IQD';
   String _fineAmount = '300,000';
   bool _payFineYourself = true;
 
@@ -302,12 +302,12 @@ class _PriceScreenState extends State<PriceScreen> {
   String _computeTotalText() {
     final int price = _parseInt(_price);
     if (!_hasFine) {
-      return '${_currency}${_formatInt(price)}';
+      return '$_currency${_formatInt(price)}';
     }
     final int fine = _parseInt(_fineAmount);
     final int fineAsListingCurrency = fine ~/ 1500;
     final int total = price - fineAsListingCurrency;
-    return '${_currency}${_formatInt(total)}';
+    return '$_currency${_formatInt(total)}';
   }
 
   int _parseInt(String value) {

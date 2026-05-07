@@ -89,15 +89,18 @@ class _CarPaintsScreenState extends State<CarPaintsScreen> {
           const PostCarTitleBlock(
             title: 'Car Paints',
             description:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                'Tell us which panels have been repainted, and what kind of paint work was done.',
           ),
           const SizedBox(height: 36),
           AppSelectField<int>(
-            label: 'Number of Paints',
+            label: 'How many panels were repainted?',
             value: _targetCount,
             options: [
               for (final count in _partsCounts)
-                AppSelectOption(value: count, label: '$count Parts'),
+                AppSelectOption(
+                  value: count,
+                  label: '$count panel${count == 1 ? '' : 's'}',
+                ),
             ],
             onChanged: _setTargetCount,
           ),

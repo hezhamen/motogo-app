@@ -6,9 +6,7 @@ import 'package:motogo_app/features/home/home_screen.dart';
 
 /// Shows the final onboarding state while the feed is prepared.
 class FeedOrganizingScreen extends StatelessWidget {
-  const FeedOrganizingScreen({super.key, required this.onThemeModeChanged});
-
-  final ValueChanged<ThemeMode> onThemeModeChanged;
+  const FeedOrganizingScreen({super.key});
 
   static const String _loaderAssetPath =
       'assets/figma/onboarding/feed_organizing.png';
@@ -54,10 +52,7 @@ class FeedOrganizingScreen extends StatelessWidget {
                 label: 'Start exploring',
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute<void>(
-                      builder: (_) =>
-                          HomeScreen(onThemeModeChanged: onThemeModeChanged),
-                    ),
+                    MaterialPageRoute<void>(builder: (_) => const HomeScreen()),
                   );
                 },
               ),

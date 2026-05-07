@@ -59,6 +59,7 @@ class AppFlowScaffold extends StatelessWidget {
     this.backgroundColor,
     this.onBack,
     this.horizontalPadding = AppSpacing.lg,
+    this.bodyHorizontalPadding,
   });
 
   final int activeStep;
@@ -68,9 +69,12 @@ class AppFlowScaffold extends StatelessWidget {
   final Color? backgroundColor;
   final VoidCallback? onBack;
   final double horizontalPadding;
+  final double? bodyHorizontalPadding;
 
   @override
   Widget build(BuildContext context) {
+    final double effectiveBodyPadding =
+        bodyHorizontalPadding ?? horizontalPadding;
     return Scaffold(
       backgroundColor: backgroundColor ?? context.appBackground,
       body: GestureDetector(
@@ -78,32 +82,50 @@ class AppFlowScaffold extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SafeArea(
           bottom: false,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-            child: Column(
-              children: [
-                const SizedBox(height: 12),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: onBack ?? () => Navigator.of(context).maybePop(),
-                    icon: const Icon(LucideIcons.arrowLeft, size: 18),
-                    style: IconButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        onPressed:
+                            onBack ?? () => Navigator.of(context).maybePop(),
+                        icon: const Icon(LucideIcons.arrowLeft, size: 18),
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
                     ),
+                    const SizedBox(height: 10),
+                    OnboardingProgress(
+                      activeStep: activeStep,
+                      totalSteps: totalSteps,
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: effectiveBodyPadding,
                   ),
+                  child: body,
                 ),
-                const SizedBox(height: 10),
-                OnboardingProgress(
-                  activeStep: activeStep,
-                  totalSteps: totalSteps,
+              ),
+              if (footer != null) ...[
+                const SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: footer!,
                 ),
-                const SizedBox(height: AppSpacing.xl),
-                Expanded(child: body),
-                if (footer != null) ...[const SizedBox(height: 16), footer!],
               ],
-            ),
+            ],
           ),
         ),
       ),

@@ -9,31 +9,38 @@ class VehicleCard extends StatelessWidget {
     super.key,
     required this.vehicle,
     this.width = 194,
+    this.height = 202,
+    this.borderRadius = AppRadius.card,
     this.backgroundColor,
   });
 
   final HomeVehicle vehicle;
   final double width;
+  final double height;
+  final double borderRadius;
   final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    const double footerHeight = 38;
+    final double imageHeight = (height - footerHeight).clamp(0, height);
+
     return Semantics(
       label: '${vehicle.name}, ${vehicle.price}',
       button: true,
       child: SizedBox(
         width: width,
-        height: 202,
+        height: height,
         child: Material(
-          color: backgroundColor ?? context.appSurface,
-          borderRadius: BorderRadius.circular(AppRadius.card),
+          color: backgroundColor ?? Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: () {},
             child: Column(
               children: [
                 SizedBox(
-                  height: 164,
+                  height: imageHeight,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [

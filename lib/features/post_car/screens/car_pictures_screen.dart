@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
@@ -6,21 +10,48 @@ import 'package:motogo_app/design_system/app_widgets.dart';
 import 'package:motogo_app/features/post_car/widgets/post_car_shared_widgets.dart';
 
 class CarPicturesScreen extends StatefulWidget {
-  const CarPicturesScreen({super.key, required this.onContinueChanged});
+  const CarPicturesScreen({
+    super.key,
+    required this.onContinueChanged,
+    required this.onImagesChanged,
+  });
 
   final ValueChanged<bool> onContinueChanged;
+  final ValueChanged<List<XFile>> onImagesChanged;
 
   @override
   State<CarPicturesScreen> createState() => _CarPicturesScreenState();
 }
 
 class _CarPicturesScreenState extends State<CarPicturesScreen> {
-  final List<String> _images = <String>[];
+  final ImagePicker _picker = ImagePicker();
+  final List<XFile> _images = <XFile>[];
 
-  void _addPlaceholderImage() {
-    setState(() {
-      _images.add('placeholder_${_images.length}');
-    });
+  Future<void> _pickFromGallery() async {
+    try {
+      final List<XFile> picked = await _picker.pickMultiImage();
+      if (!mounted || picked.isEmpty) return;
+      setState(() => _images.addAll(picked));
+      widget.onImagesChanged(List<XFile>.unmodifiable(_images));
+    } on MissingPluginException {
+      // Plugin not registered yet (hot reload) or unsupported platform.
+      final XFile? single = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
+      if (!mounted || single == null) return;
+      setState(() => _images.add(single));
+      widget.onImagesChanged(List<XFile>.unmodifiable(_images));
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Could not open gallery. Restart app if you just added plugin.',
+            style: AppTextStyles.caption.copyWith(color: Colors.white),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -43,7 +74,7 @@ class _CarPicturesScreenState extends State<CarPicturesScreen> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(AppRadius.card),
-              onTap: _addPlaceholderImage,
+              onTap: _pickFromGallery,
               child: AppSurface(
                 height: 192,
                 width: double.infinity,
@@ -103,20 +134,44 @@ class _CarPicturesScreenState extends State<CarPicturesScreen> {
               childAspectRatio: 1,
             ),
             itemBuilder: (context, index) {
+              final XFile? image = index < _images.length
+                  ? _images[index]
+                  : null;
               return Material(
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(22.557),
-                  onTap: _addPlaceholderImage,
+                  onTap: _pickFromGallery,
                   child: AppSurface(
                     color: context.appSurface,
                     borderRadius: 22.557,
                     child: Center(
-                      child: Icon(
-                        LucideIcons.imagePlus,
-                        size: 22,
-                        color: context.appTextPrimary.withValues(alpha: 0.55),
-                      ),
+                      child: image == null
+                          ? Icon(
+                              LucideIcons.imagePlus,
+                              size: 22,
+                              color: context.appTextPrimary.withValues(
+                                alpha: 0.55,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(22.557),
+                              child: Image.file(
+                                File(image.path),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Icon(
+                                    LucideIcons.imageOff,
+                                    size: 22,
+                                    color: context.appTextPrimary.withValues(
+                                      alpha: 0.55,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                     ),
                   ),
                 ),

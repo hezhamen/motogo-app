@@ -19,13 +19,17 @@ class SponsoredSection extends StatefulWidget {
 class _SponsoredSectionState extends State<SponsoredSection> {
   @override
   Widget build(BuildContext context) {
+    final double bottomPadding = widget.layout == HomeFeedLayout.grid
+        ? AppSpacing.sm
+        : AppSpacing.md;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ColoredBox(
           color: context.appSurface,
           child: Padding(
-            padding: const EdgeInsets.only(top: 18, bottom: AppSpacing.md),
+            padding: EdgeInsets.only(top: 18, bottom: bottomPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,17 +51,16 @@ class _SponsoredSectionState extends State<SponsoredSection> {
                     itemBuilder: (context, index) {
                       return VehicleCard(
                         vehicle: HomeData.featuredVehicles[index],
+                        borderRadius: 0,
+                        backgroundColor: Colors.transparent,
                       );
                     },
                   ),
                 ),
-                const SizedBox(height: 12),
-                const Center(child: _CarouselDots(activeIndex: 0)),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 38),
         if (widget.layout == HomeFeedLayout.grid)
           const _GridFeedVehicles()
         else
@@ -72,25 +75,37 @@ class _GridFeedVehicles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const double horizontalPadding = AppSpacing.md;
-        const double columnGap = 10;
-        final double cardWidth =
-            (constraints.maxWidth - horizontalPadding * 2 - columnGap) / 2;
+    const double padding = AppSpacing.md;
+    const double gap = 10;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Wrap(
-            spacing: columnGap,
-            runSpacing: 12,
-            children: [
-              for (final vehicle in HomeData.feedVehicles)
-                VehicleCard(width: cardWidth, vehicle: vehicle),
-            ],
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: padding),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double tileWidth = (constraints.maxWidth - gap) / 2;
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.only(top: AppSpacing.md),
+            itemCount: HomeData.feedVehicles.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: gap,
+              mainAxisSpacing: gap,
+              childAspectRatio: 1,
+            ),
+            itemBuilder: (context, index) {
+              final vehicle = HomeData.feedVehicles[index];
+              return VehicleCard(
+                vehicle: vehicle,
+                width: tileWidth,
+                height: tileWidth,
+                borderRadius: 0,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

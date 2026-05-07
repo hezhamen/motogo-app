@@ -9,22 +9,18 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
     required this.height,
-    required this.onThemeModeChanged,
     required this.feedLayout,
     required this.onFeedLayoutChanged,
     required this.onCreateListing,
   });
 
   final double height;
-  final ValueChanged<ThemeMode> onThemeModeChanged;
   final HomeFeedLayout feedLayout;
   final ValueChanged<HomeFeedLayout> onFeedLayoutChanged;
   final VoidCallback onCreateListing;
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       height: height,
       padding: EdgeInsets.only(
@@ -49,20 +45,6 @@ class HomeHeader extends StatelessWidget {
                     iconColor: Colors.white,
                     semanticLabel: 'Create listing',
                     onTap: onCreateListing,
-                  ),
-                  const SizedBox(width: 8),
-                  _HeaderActionButton(
-                    icon: isDark ? LucideIcons.sun : LucideIcons.moon,
-                    backgroundColor: context.appSurfaceRaised,
-                    iconColor: context.appTextPrimary,
-                    semanticLabel: isDark
-                        ? 'Switch to light theme'
-                        : 'Switch to dark theme',
-                    onTap: () {
-                      onThemeModeChanged(
-                        isDark ? ThemeMode.light : ThemeMode.dark,
-                      );
-                    },
                   ),
                   const SizedBox(width: 8),
                   _HeaderActionButton(

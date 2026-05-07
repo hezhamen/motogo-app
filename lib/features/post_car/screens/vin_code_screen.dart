@@ -7,17 +7,48 @@ import 'package:motogo_app/features/post_car/widgets/post_car_shared_widgets.dar
 
 const String _vinHeroImageAsset = 'assets/figma/post_car/vin_hero.png';
 
-class VinCodeScreen extends StatelessWidget {
-  const VinCodeScreen({super.key, required this.onContinueChanged});
+class VinCodeScreen extends StatefulWidget {
+  const VinCodeScreen({
+    super.key,
+    required this.onContinueChanged,
+    required this.onScanVin,
+  });
 
-  static const String _vinCode = '4Y1SL65848Z411439';
   final ValueChanged<bool> onContinueChanged;
+  final VoidCallback onScanVin;
+
+  @override
+  State<VinCodeScreen> createState() => _VinCodeScreenState();
+}
+
+class _VinCodeScreenState extends State<VinCodeScreen> {
+  static const String _initialVinCode = '4Y1SL65848Z411439';
+
+  late final TextEditingController _controller = TextEditingController(
+    text: _initialVinCode,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_notify);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _notify());
+  }
+
+  @override
+  void dispose() {
+    _controller
+      ..removeListener(_notify)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _notify() {
+    widget.onContinueChanged(_controller.text.trim().isNotEmpty);
+  }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      onContinueChanged(true);
-    });
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,13 +67,22 @@ class VinCodeScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: _FieldSurface(
-                  child: const Text(_vinCode, style: _valueStyle),
+                  child: TextField(
+                    controller: _controller,
+                    style: _valueStyle,
+                    cursorColor: context.appTextPrimary,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      isCollapsed: true,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
-              const _IconButtonSurface(
+              _IconButtonSurface(
                 icon: LucideIcons.scanLine,
                 semanticLabel: 'Scan the VIN code again',
+                onTap: widget.onScanVin,
               ),
             ],
           ),
@@ -175,10 +215,15 @@ class _FieldSurface extends StatelessWidget {
 }
 
 class _IconButtonSurface extends StatelessWidget {
-  const _IconButtonSurface({required this.icon, required this.semanticLabel});
+  const _IconButtonSurface({
+    required this.icon,
+    required this.semanticLabel,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String semanticLabel;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +234,7 @@ class _IconButtonSurface extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.card),
-          onTap: () {},
+          onTap: onTap,
           child: AppSurface(
             width: 61,
             height: 61,

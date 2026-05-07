@@ -8,9 +8,7 @@ import 'package:motogo_app/features/onboarding/register_screen.dart';
 
 /// Coordinates onboarding while keeping the progress stepper fixed in place.
 class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key, required this.onThemeModeChanged});
-
-  final ValueChanged<ThemeMode> onThemeModeChanged;
+  const OnboardingFlow({super.key});
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
@@ -57,10 +55,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   void _finishPersonalInfo() {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            FeedOrganizingScreen(onThemeModeChanged: widget.onThemeModeChanged),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const FeedOrganizingScreen()),
     );
   }
 
