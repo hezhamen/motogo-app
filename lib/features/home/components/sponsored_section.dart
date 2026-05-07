@@ -6,6 +6,7 @@ import 'package:motogo_app/features/home/components/home_section_title.dart';
 import 'package:motogo_app/features/home/components/vehicle_card.dart';
 import 'package:motogo_app/features/home/models/home_data.dart';
 import 'package:motogo_app/features/home/models/home_feed_layout.dart';
+import 'package:motogo_app/features/vehicle_details/vehicle_detail_screen.dart';
 
 class SponsoredSection extends StatefulWidget {
   const SponsoredSection({super.key, required this.layout});
@@ -49,10 +50,21 @@ class _SponsoredSectionState extends State<SponsoredSection> {
                     itemCount: HomeData.featuredVehicles.length,
                     separatorBuilder: (_, _) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
+                      final vehicle = HomeData.featuredVehicles[index];
+                      final String heroTag = 'featured_${index}_image';
+                      final String logoHeroTag = 'featured_${index}_logo';
                       return VehicleCard(
-                        vehicle: HomeData.featuredVehicles[index],
+                        vehicle: vehicle,
                         borderRadius: 0,
                         backgroundColor: Colors.transparent,
+                        heroTag: heroTag,
+                        logoHeroTag: logoHeroTag,
+                        onTap: () => VehicleDetailScreen.open(
+                          context,
+                          vehicle: vehicle,
+                          heroTag: heroTag,
+                          logoHeroTag: logoHeroTag,
+                        ),
                       );
                     },
                   ),
@@ -96,11 +108,21 @@ class _GridFeedVehicles extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final vehicle = HomeData.feedVehicles[index];
+              final String heroTag = 'grid_${index}_image';
+              final String logoHeroTag = 'grid_${index}_logo';
               return VehicleCard(
                 vehicle: vehicle,
                 width: tileWidth,
                 height: tileWidth,
                 borderRadius: 0,
+                heroTag: heroTag,
+                logoHeroTag: logoHeroTag,
+                onTap: () => VehicleDetailScreen.open(
+                  context,
+                  vehicle: vehicle,
+                  heroTag: heroTag,
+                  logoHeroTag: logoHeroTag,
+                ),
               );
             },
           );

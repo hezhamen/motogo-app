@@ -12,6 +12,9 @@ class VehicleCard extends StatelessWidget {
     this.height = 202,
     this.borderRadius = AppRadius.card,
     this.backgroundColor,
+    this.onTap,
+    this.heroTag,
+    this.logoHeroTag,
   });
 
   final HomeVehicle vehicle;
@@ -19,11 +22,32 @@ class VehicleCard extends StatelessWidget {
   final double height;
   final double borderRadius;
   final Color? backgroundColor;
+  final VoidCallback? onTap;
+  final String? heroTag;
+  final String? logoHeroTag;
 
   @override
   Widget build(BuildContext context) {
     const double footerHeight = 38;
     final double imageHeight = (height - footerHeight).clamp(0, height);
+
+    final Widget image = Image.asset(
+      vehicle.imageUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        return ColoredBox(color: context.appSurfaceRaised);
+      },
+    );
+
+    final Widget logo = Image.asset(
+      vehicle.brandLogoUrl,
+      width: vehicle.brandLogoSize.width,
+      height: vehicle.brandLogoSize.height,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        return const SizedBox.shrink();
+      },
+    );
 
     return Semantics(
       label: '${vehicle.name}, ${vehicle.price}',
@@ -36,7 +60,7 @@ class VehicleCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Column(
               children: [
                 SizedBox(
@@ -44,13 +68,9 @@ class VehicleCard extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(
-                        vehicle.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ColoredBox(color: context.appSurfaceRaised);
-                        },
-                      ),
+                      heroTag == null
+                          ? image
+                          : Hero(tag: heroTag!, child: image),
                       const DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -64,15 +84,9 @@ class VehicleCard extends StatelessWidget {
                       Positioned(
                         left: 10,
                         bottom: 7,
-                        child: Image.asset(
-                          vehicle.brandLogoUrl,
-                          width: vehicle.brandLogoSize.width,
-                          height: vehicle.brandLogoSize.height,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox.shrink();
-                          },
-                        ),
+                        child: logoHeroTag == null
+                            ? logo
+                            : Hero(tag: logoHeroTag!, child: logo),
                       ),
                       const Positioned(
                         right: 9,
