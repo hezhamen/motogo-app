@@ -6,7 +6,7 @@ import 'package:motogo_app/design_system/app_widgets.dart';
 import 'package:motogo_app/features/home/models/home_data.dart';
 
 /// Vehicle posting details screen (Figma node `34:497`).
-class VehicleDetailScreen extends StatelessWidget {
+class VehicleDetailScreen extends StatefulWidget {
   const VehicleDetailScreen({
     super.key,
     required this.vehicle,
@@ -36,6 +36,41 @@ class VehicleDetailScreen extends StatelessWidget {
   }
 
   @override
+  State<VehicleDetailScreen> createState() => _VehicleDetailScreenState();
+}
+
+class _VehicleDetailScreenState extends State<VehicleDetailScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _enterController;
+
+  @override
+  void initState() {
+    super.initState();
+    _enterController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 650),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final media = MediaQuery.maybeOf(context);
+      final bool reduceMotion =
+          (media?.disableAnimations ?? false) ||
+          (media?.accessibleNavigation ?? false);
+      if (reduceMotion) {
+        _enterController.value = 1;
+      } else {
+        _enterController.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _enterController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final EdgeInsets viewPadding = MediaQuery.paddingOf(context);
     final double headerHeight = viewPadding.top + 71;
@@ -50,97 +85,62 @@ class VehicleDetailScreen extends StatelessWidget {
               children: [
                 SizedBox(height: headerHeight),
                 _HeroHeader(
-                  vehicle: vehicle,
-                  heroTag: heroTag,
-                  logoHeroTag: logoHeroTag,
+                  vehicle: widget.vehicle,
+                  heroTag: widget.heroTag,
+                  logoHeroTag: widget.logoHeroTag,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 48),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          const _MetaChip(
-                            icon: LucideIcons.mapPin,
-                            text: 'Sulaymaniyah',
-                            alignEnd: false,
-                          ),
-                          const Spacer(),
-                          Text(
-                            '${vehicle.name} 2021',
-                            style: AppTextStyles.valueLarge.copyWith(
-                              color: Colors.black,
-                              fontSize: 16,
+                      _StaggerFadeSlide(
+                        controller: _enterController,
+                        begin: 0.00,
+                        end: 0.35,
+                        child: Row(
+                          children: [
+                            const _MetaChip(
+                              icon: LucideIcons.mapPin,
+                              text: 'Sulaymaniyah',
+                              alignEnd: false,
                             ),
-                          ),
-                          const Spacer(),
-                          const _MetaChip(
-                            icon: LucideIcons.clock,
-                            text: '2 Days Ago',
-                            alignEnd: true,
-                          ),
-                        ],
+                            const Spacer(),
+                            Text(
+                              '${widget.vehicle.name} 2021',
+                              style: AppTextStyles.valueLarge.copyWith(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const Spacer(),
+                            const _MetaChip(
+                              icon: LucideIcons.clock,
+                              text: '2 Days Ago',
+                              alignEnd: true,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 24),
                       const _DividerLine(),
                       const SizedBox(height: 24),
-                      const _SpecGrid(),
+                      _StaggerFadeSlide(
+                        controller: _enterController,
+                        begin: 0.15,
+                        end: 0.65,
+                        offsetY: 10,
+                        child: _SpecGrid(controller: _enterController),
+                      ),
                       const SizedBox(height: 36),
-                      Text(
-                        'Detailed Informations',
-                        style: AppTextStyles.valueLarge.copyWith(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
+                      _StaggerFadeSlide(
+                        controller: _enterController,
+                        begin: 0.35,
+                        end: 1.00,
+                        offsetY: 12,
+                        child: const _DetailSections(),
                       ),
-                      const SizedBox(height: 14),
-                      const _InfoRow(
-                        label: 'Body Color',
-                        value: 'Khanaii',
-                        leadingDotColor: Color(0xFFB5524D),
-                      ),
-                      const _DividerLine(),
-                      const _InfoRow(
-                        label: 'Interior Color',
-                        value: 'Black',
-                        leadingDotColor: Color(0xFF000000),
-                      ),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'Seat No', value: '5 Seats'),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'Seat Material', value: 'Leather'),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'State', value: 'Used'),
-                      const _DividerLine(),
-                      const SizedBox(height: 24),
-                      Text(
-                        'Car Paints',
-                        style: AppTextStyles.valueLarge.copyWith(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      const _InfoRow(
-                        label: 'Body Color',
-                        value: 'Khanaii',
-                        leadingDotColor: Color(0xFFB5524D),
-                      ),
-                      const _DividerLine(),
-                      const _InfoRow(
-                        label: 'Interior Color',
-                        value: 'Black',
-                        leadingDotColor: Color(0xFF000000),
-                      ),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'Seat No', value: '5 Seats'),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'Seat Material', value: 'Leather'),
-                      const _DividerLine(),
-                      const _InfoRow(label: 'State', value: 'Used'),
-                      const _DividerLine(),
                       const SizedBox(height: 16),
                     ],
                   ),
@@ -154,6 +154,107 @@ class VehicleDetailScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _StaggerFadeSlide extends StatelessWidget {
+  const _StaggerFadeSlide({
+    required this.controller,
+    required this.begin,
+    required this.end,
+    required this.child,
+    this.offsetY = 8,
+  });
+
+  final AnimationController controller;
+  final double begin;
+  final double end;
+  final double offsetY;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final CurvedAnimation curved = CurvedAnimation(
+      parent: controller,
+      curve: Interval(begin, end, curve: Curves.easeOutCubic),
+    );
+
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(0, offsetY / 100),
+          end: Offset.zero,
+        ).animate(curved),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _DetailSections extends StatelessWidget {
+  const _DetailSections();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Detailed Informations',
+          style: AppTextStyles.valueLarge.copyWith(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(height: 14),
+        const _InfoRow(
+          label: 'Body Color',
+          value: 'Khanaii',
+          leadingDotColor: Color(0xFFB5524D),
+        ),
+        const _DividerLine(),
+        const _InfoRow(
+          label: 'Interior Color',
+          value: 'Black',
+          leadingDotColor: Color(0xFF000000),
+        ),
+        const _DividerLine(),
+        const _InfoRow(label: 'Seat No', value: '5 Seats'),
+        const _DividerLine(),
+        const _InfoRow(label: 'Seat Material', value: 'Leather'),
+        const _DividerLine(),
+        const _InfoRow(label: 'State', value: 'Used'),
+        const _DividerLine(),
+        const SizedBox(height: 24),
+        Text(
+          'Car Paints',
+          style: AppTextStyles.valueLarge.copyWith(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(height: 14),
+        const _InfoRow(
+          label: 'Body Color',
+          value: 'Khanaii',
+          leadingDotColor: Color(0xFFB5524D),
+        ),
+        const _DividerLine(),
+        const _InfoRow(
+          label: 'Interior Color',
+          value: 'Black',
+          leadingDotColor: Color(0xFF000000),
+        ),
+        const _DividerLine(),
+        const _InfoRow(label: 'Seat No', value: '5 Seats'),
+        const _DividerLine(),
+        const _InfoRow(label: 'Seat Material', value: 'Leather'),
+        const _DividerLine(),
+        const _InfoRow(label: 'State', value: 'Used'),
+        const _DividerLine(),
+      ],
     );
   }
 }
@@ -397,7 +498,9 @@ class _DividerLine extends StatelessWidget {
 }
 
 class _SpecGrid extends StatelessWidget {
-  const _SpecGrid();
+  const _SpecGrid({required this.controller});
+
+  final AnimationController controller;
 
   static const specs = [
     _SpecCardData(label: 'Piston', value: '4', icon: LucideIcons.circleDot),
@@ -417,7 +520,16 @@ class _SpecGrid extends StatelessWidget {
         return Wrap(
           spacing: gap,
           runSpacing: gap,
-          children: [for (final s in specs) _SpecCard(data: s, width: width)],
+          children: [
+            for (int i = 0; i < specs.length; i++)
+              _StaggerFadeSlide(
+                controller: controller,
+                begin: 0.18 + i * 0.06,
+                end: 0.70 + i * 0.04,
+                offsetY: 10,
+                child: _SpecCard(data: specs[i], width: width),
+              ),
+          ],
         );
       },
     );
