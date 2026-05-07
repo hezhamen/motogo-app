@@ -1,4 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
@@ -42,6 +45,7 @@ class VehicleDetailScreen extends StatefulWidget {
 class _VehicleDetailScreenState extends State<VehicleDetailScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _enterController;
+  bool _logoIsLight = false;
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
       vsync: this,
       duration: const Duration(milliseconds: 650),
     );
+    _initLogoTone();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final media = MediaQuery.maybeOf(context);
@@ -62,6 +67,53 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
         _enterController.forward();
       }
     });
+  }
+
+  Future<void> _initLogoTone() async {
+    final bool isLight = await _isAssetMostlyLight(widget.vehicle.brandLogoUrl);
+    if (!mounted) return;
+    setState(() => _logoIsLight = isLight);
+  }
+
+  Future<bool> _isAssetMostlyLight(String assetPath) async {
+    try {
+      final ByteData data = await rootBundle.load(assetPath);
+      final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(
+        data.buffer.asUint8List(),
+      );
+      final ui.ImageDescriptor descriptor = await ui.ImageDescriptor.encoded(
+        buffer,
+      );
+      final ui.Codec codec = await descriptor.instantiateCodec(
+        targetWidth: 24,
+        targetHeight: 24,
+      );
+      final ui.FrameInfo frame = await codec.getNextFrame();
+      final ByteData? rgba = await frame.image.toByteData(
+        format: ui.ImageByteFormat.rawRgba,
+      );
+      if (rgba == null) return false;
+
+      final Uint8List bytes = rgba.buffer.asUint8List();
+      int bright = 0;
+      int opaque = 0;
+
+      for (int i = 0; i < bytes.length; i += 4) {
+        final int r = bytes[i];
+        final int g = bytes[i + 1];
+        final int b = bytes[i + 2];
+        final int a = bytes[i + 3];
+        if (a < 20) continue;
+        opaque++;
+        final double luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        if (luma > 200) bright++;
+      }
+
+      if (opaque == 0) return false;
+      return bright / opaque > 0.55;
+    } catch (_) {
+      return false;
+    }
   }
 
   @override
@@ -88,6 +140,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
                   vehicle: widget.vehicle,
                   heroTag: widget.heroTag,
                   logoHeroTag: widget.logoHeroTag,
+                  logoIsLight: _logoIsLight,
                 ),
                 const SizedBox(height: 48),
                 Padding(
@@ -326,11 +379,13 @@ class _HeroHeader extends StatelessWidget {
     required this.vehicle,
     required this.heroTag,
     required this.logoHeroTag,
+    required this.logoIsLight,
   });
 
   final HomeVehicle vehicle;
   final String heroTag;
   final String logoHeroTag;
+  final bool logoIsLight;
 
   @override
   Widget build(BuildContext context) {
@@ -389,10 +444,14 @@ class _HeroHeader extends StatelessWidget {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
+                  color: logoIsLight
+                      ? const Color(0xFF1C1C1E)
+                      : const Color(0xFFF5F5F5),
                   borderRadius: BorderRadius.circular(32),
                   border: Border.all(
-                    color: const Color(0xFFE2E2E2),
+                    color: logoIsLight
+                        ? const Color(0x33000000)
+                        : const Color(0xFFE2E2E2),
                     width: 1.333,
                   ),
                 ),
@@ -408,7 +467,9 @@ class _HeroHeader extends StatelessWidget {
                       return Icon(
                         LucideIcons.car,
                         size: 22,
-                        color: Colors.black.withValues(alpha: 0.7),
+                        color: logoIsLight
+                            ? Colors.white.withValues(alpha: 0.7)
+                            : Colors.black.withValues(alpha: 0.7),
                       );
                     },
                   ),
