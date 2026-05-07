@@ -322,14 +322,17 @@ class _AppNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color iconColor = item.isSelected
+    final bool isDisabled = item.onTap == null;
+    final Color iconColor = isDisabled
+        ? context.appTextPrimary.withValues(alpha: 0.28)
+        : item.isSelected
         ? context.appTextPrimary
         : context.appTextPrimary.withValues(alpha: 0.55);
 
     return Semantics(
       label: item.label,
-      selected: item.isSelected,
-      button: true,
+      selected: item.isSelected && !isDisabled,
+      button: !isDisabled,
       child: Material(
         color: Colors.transparent,
         child: InkWell(

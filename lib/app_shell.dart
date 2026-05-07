@@ -18,6 +18,9 @@ class _AppShellState extends State<AppShell> {
   final PageStorageBucket _bucket = PageStorageBucket();
   bool _isBottomNavVisible = true;
 
+  // TODO(temporary): Search/VIN/Saved screens disabled. Keep tabs visible but inert.
+  static const Set<int> _disabledTabIndexes = <int>{1, 2, 3};
+
   static const Duration _switchDuration = Duration(milliseconds: 280);
   static const Curve _switchCurve = Curves.easeOutCubic;
   static const Duration _bottomNavDuration = Duration(milliseconds: 220);
@@ -128,6 +131,7 @@ class _AppShellState extends State<AppShell> {
                       activeIndex: _activeIndex,
                       onTabSelected: (index) {
                         if (_activeIndex == index) return;
+                        if (_disabledTabIndexes.contains(index)) return;
                         setState(() {
                           _isBottomNavVisible = true;
                           _previousIndex = _activeIndex;

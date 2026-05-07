@@ -11,6 +11,8 @@ class HomeBottomNavigation extends StatelessWidget {
     required this.onTabSelected,
   });
 
+  static const Set<int> _disabledTabIndexes = <int>{1, 2, 3};
+
   final double height;
   final int activeIndex;
   final ValueChanged<int> onTabSelected;
@@ -27,24 +29,28 @@ class HomeBottomNavigation extends StatelessWidget {
           onTap: () => onTabSelected(0),
         ),
         AppBottomNavigationItem(
-          icon: activeIndex == 1 ? Boxicons.bxs_search : Boxicons.bx_search,
+          icon: Boxicons.bx_search,
           label: 'Search',
-          isSelected: activeIndex == 1,
-          onTap: () => onTabSelected(1),
+          isSelected: false,
+          onTap: _disabledTabIndexes.contains(1)
+              ? null
+              : () => onTabSelected(1),
         ),
         AppBottomNavigationItem(
-          icon: activeIndex == 2
-              ? Boxicons.bxs_barcode
-              : Boxicons.bx_barcode_reader,
+          icon: Boxicons.bx_barcode_reader,
           label: 'Vin Check',
-          isSelected: activeIndex == 2,
-          onTap: () => onTabSelected(2),
+          isSelected: false,
+          onTap: _disabledTabIndexes.contains(2)
+              ? null
+              : () => onTabSelected(2),
         ),
         AppBottomNavigationItem(
-          icon: activeIndex == 3 ? Boxicons.bxs_bookmark : Boxicons.bx_bookmark,
+          icon: Boxicons.bx_bookmark,
           label: 'Saved',
-          isSelected: activeIndex == 3,
-          onTap: () => onTabSelected(3),
+          isSelected: false,
+          onTap: _disabledTabIndexes.contains(3)
+              ? null
+              : () => onTabSelected(3),
         ),
         AppBottomNavigationItem(
           icon: activeIndex == 4 ? Boxicons.bxs_user : Boxicons.bx_user,

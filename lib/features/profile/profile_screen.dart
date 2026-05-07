@@ -182,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
                             icon: Boxicons.bxs_log_out,
                             label: 'Log out',
                             danger: true,
-                            onTap: () {},
+                            onTap: null,
                           ),
                         ),
                         SizedBox(height: bottomNavHeight + 24),
@@ -209,15 +209,19 @@ class _ActionRow extends StatelessWidget {
 
   final IconData icon;
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool danger;
 
   @override
   Widget build(BuildContext context) {
-    final Color color = danger ? context.appAccent : context.appTextPrimary;
+    final bool isDisabled = onTap == null;
+    final Color baseColor = danger ? context.appAccent : context.appTextPrimary;
+    final Color color = isDisabled
+        ? baseColor.withValues(alpha: 0.35)
+        : baseColor;
     return Semantics(
       label: label,
-      button: true,
+      button: !isDisabled,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -245,7 +249,9 @@ class _ActionRow extends StatelessWidget {
                 Icon(
                   Boxicons.bx_chevron_right,
                   size: 18,
-                  color: context.appTextPrimary.withValues(alpha: 0.55),
+                  color: isDisabled
+                      ? context.appTextPrimary.withValues(alpha: 0.25)
+                      : context.appTextPrimary.withValues(alpha: 0.55),
                 ),
               ],
             ),
