@@ -198,7 +198,7 @@ class _FeedVehicleCardState extends State<_FeedVehicleCard> {
                         });
                       },
                       itemBuilder: (context, index) {
-                        return Image.network(
+                        return Image.asset(
                           widget.vehicle.imageUrl,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
@@ -231,7 +231,7 @@ class _FeedVehicleCardState extends State<_FeedVehicleCard> {
                     Positioned(
                       right: 14,
                       bottom: 14,
-                      child: Image.network(
+                      child: Image.asset(
                         widget.vehicle.brandLogoUrl,
                         width: widget.vehicle.brandLogoSize.width,
                         height: widget.vehicle.brandLogoSize.height,
@@ -304,7 +304,7 @@ class _VehicleAvatar extends StatelessWidget {
         border: Border.all(color: context.appOutlineSubtle),
       ),
       alignment: Alignment.center,
-      child: Image.network(
+      child: Image.asset(
         vehicle.brandLogoUrl,
         width: vehicle.brandLogoSize.width * 0.85,
         height: vehicle.brandLogoSize.height * 0.85,

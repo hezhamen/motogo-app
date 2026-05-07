@@ -10,8 +10,8 @@ class FeedOrganizingScreen extends StatelessWidget {
 
   final ValueChanged<ThemeMode> onThemeModeChanged;
 
-  static const String _loaderAssetUrl =
-      'https://www.figma.com/api/mcp/asset/2f3931e5-3a64-4187-ad07-ec27d160f30e';
+  static const String _loaderAssetPath =
+      'assets/figma/onboarding/feed_organizing.png';
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +25,11 @@ class FeedOrganizingScreen extends StatelessWidget {
               const Spacer(),
               Column(
                 children: [
-                  Image.network(
-                    _loaderAssetUrl,
+                  Image.asset(
+                    _loaderAssetPath,
                     width: 64,
                     height: 64,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const SizedBox(
-                        width: 64,
-                        height: 64,
-                        child: CircularProgressIndicator(strokeWidth: 4),
-                      );
-                    },
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(

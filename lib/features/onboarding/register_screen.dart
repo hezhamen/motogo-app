@@ -12,8 +12,8 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  static const String _iraqFlagUrl =
-      'https://www.figma.com/api/mcp/asset/de7c78ce-da77-40b4-8db9-499f534b8318';
+  static const String _iraqFlagAssetPath =
+      'assets/figma/onboarding/register_hero.png';
 
   static const List<AppSelectOption<String>> _cityOptions = [
     AppSelectOption(value: 'Sulaymaniyah', label: 'Sulaymaniyah'),
@@ -82,8 +82,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
-                  child: Image.network(
-                    _iraqFlagUrl,
+                  child: Image.asset(
+                    _iraqFlagAssetPath,
                     width: 24,
                     height: 24,
                     fit: BoxFit.cover,

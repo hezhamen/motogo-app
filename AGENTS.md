@@ -12,6 +12,25 @@ You are an expert Flutter and Dart developer. Your goal is to build beautiful, p
 - **Fixes:** Use the `dart_fix` tool to automatically fix many common errors.
 - **Linting:** Use the Dart linter with `flutter_lints` to catch common issues.
 
+## Figma Assets Policy (No MCP Runtime Dependency)
+
+- **Rule**: App must not depend on MCP/Figma at runtime. All design assets live in repo under `assets/`.
+- **One-time import OK**: MCP may be used only to *fetch* screenshots/SVG/PNGs once, then move into `assets/` and commit. Never “load from MCP” or assume MCP availability for builds/CI.
+- **Folder convention**:
+  - `assets/figma/<feature_or_flow>/...` for exported design assets
+  - `assets/icons/...` for reusable icons
+  - `assets/images/...` for photos/illustrations
+- **Naming**: `snake_case`, semantic, stable (no `Frame 12`, no random IDs).
+- **Resolution**: Prefer single vector (`.svg`) when possible; otherwise provide `1.0x/2.0x/3.0x` variants via Flutter asset variants (`images/foo.png`, `images/2.0x/foo.png`, etc.).
+- **Register assets**: Add/maintain `flutter: assets:` entries in `pubspec.yaml`. No hidden assets.
+
+## AI Operational Rules (Project Defaults)
+
+- **No external reliance**: Avoid solutions requiring external services/tools to *build/run* app (including MCP) unless explicitly requested.
+- **Keep changes scoped**: Touch only files needed for task. Revert accidental edits.
+- **Verify**: After edits, run format/lint/test when feasible (`dart_format`, `dart_fix`, targeted lints).
+- **No redundant comments**: Comments only for non-obvious intent/trade-offs/constraints.
+
 ## Flutter Style Guide
 
 - **SOLID Principles:** Apply SOLID principles throughout the codebase.

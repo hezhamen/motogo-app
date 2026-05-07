@@ -37,7 +37,7 @@ class VehicleCard extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
+                      Image.asset(
                         vehicle.imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
@@ -57,7 +57,7 @@ class VehicleCard extends StatelessWidget {
                       Positioned(
                         left: 10,
                         bottom: 7,
-                        child: Image.network(
+                        child: Image.asset(
                           vehicle.brandLogoUrl,
                           width: vehicle.brandLogoSize.width,
                           height: vehicle.brandLogoSize.height,

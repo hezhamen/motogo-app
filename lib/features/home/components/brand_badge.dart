@@ -25,7 +25,7 @@ class BrandBadge extends StatelessWidget {
               color: context.appSurfaceRaised,
               borderRadius: 27,
               borderColor: context.appOutlineSubtle,
-              child: Image.network(
+              child: Image.asset(
                 brand.logoUrl,
                 width: brand.logoSize.width,
                 height: brand.logoSize.height,
