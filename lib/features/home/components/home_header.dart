@@ -40,14 +40,6 @@ class HomeHeader extends StatelessWidget {
               Row(
                 children: [
                   _HeaderActionButton(
-                    icon: LucideIcons.plus,
-                    backgroundColor: context.appAccent,
-                    iconColor: Colors.white,
-                    semanticLabel: 'Create listing',
-                    onTap: onCreateListing,
-                  ),
-                  const SizedBox(width: 8),
-                  _HeaderActionButton(
                     icon: LucideIcons.scanLine,
                     backgroundColor: context.appSurfaceRaised,
                     iconColor: context.appTextPrimary,
@@ -55,9 +47,17 @@ class HomeHeader extends StatelessWidget {
                     onTap: () {},
                   ),
                   const SizedBox(width: 8),
-                  _LayoutToggle(
+                  _LayoutToggleButton(
                     value: feedLayout,
                     onChanged: onFeedLayoutChanged,
+                  ),
+                  const SizedBox(width: 8),
+                  _HeaderActionButton(
+                    icon: LucideIcons.plus,
+                    backgroundColor: context.appAccent,
+                    iconColor: Colors.white,
+                    semanticLabel: 'Create listing',
+                    onTap: onCreateListing,
                   ),
                 ],
               ),
@@ -69,79 +69,40 @@ class HomeHeader extends StatelessWidget {
   }
 }
 
-class _LayoutToggle extends StatelessWidget {
-  const _LayoutToggle({required this.value, required this.onChanged});
+class _LayoutToggleButton extends StatelessWidget {
+  const _LayoutToggleButton({required this.value, required this.onChanged});
 
   final HomeFeedLayout value;
   final ValueChanged<HomeFeedLayout> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 36,
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: context.appSurfaceRaised,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: context.appOutlineSubtle, width: 0.75),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _LayoutToggleButton(
-            icon: Icons.grid_view_rounded,
-            isSelected: value == HomeFeedLayout.grid,
-            semanticLabel: 'Switch to grid view',
-            onTap: () => onChanged(HomeFeedLayout.grid),
-          ),
-          _LayoutToggleButton(
-            icon: Icons.view_agenda_rounded,
-            isSelected: value == HomeFeedLayout.feed,
-            semanticLabel: 'Switch to feed view',
-            onTap: () => onChanged(HomeFeedLayout.feed),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final HomeFeedLayout nextValue = value == HomeFeedLayout.grid
+        ? HomeFeedLayout.feed
+        : HomeFeedLayout.grid;
 
-class _LayoutToggleButton extends StatelessWidget {
-  const _LayoutToggleButton({
-    required this.icon,
-    required this.isSelected,
-    required this.semanticLabel,
-    required this.onTap,
-  });
+    final IconData icon = value == HomeFeedLayout.grid
+        ? Icons.grid_view_outlined
+        : Icons.view_agenda_outlined;
 
-  final IconData icon;
-  final bool isSelected;
-  final String semanticLabel;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color backgroundColor = isSelected
-        ? context.appButtonPrimary
-        : Colors.transparent;
-    final Color iconColor = isSelected
-        ? context.appButtonOnPrimary
-        : context.appTextPrimary;
+    final String semanticLabel = value == HomeFeedLayout.grid
+        ? 'Switch to feed view'
+        : 'Switch to grid view';
 
     return Semantics(
       label: semanticLabel,
-      selected: isSelected,
       button: true,
-      child: SizedBox(
-        width: 34,
-        height: 32,
+      child: SizedBox.square(
+        dimension: 36,
         child: Material(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          color: context.appSurfaceRaised,
+          shape: CircleBorder(
+            side: BorderSide(color: context.appOutlineSubtle, width: 0.75),
+          ),
           child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: onTap,
-            child: Icon(icon, size: 19, color: iconColor),
+            customBorder: const CircleBorder(),
+            onTap: () => onChanged(nextValue),
+            child: Icon(icon, size: 19, color: context.appTextPrimary),
           ),
         ),
       ),
