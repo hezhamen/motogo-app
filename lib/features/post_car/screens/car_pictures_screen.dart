@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -93,7 +93,7 @@ class _CarPicturesScreenState extends State<CarPicturesScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Icon(
-                          LucideIcons.imagePlus,
+                          Boxicons.bx_image_add,
                           size: 20,
                           color: context.appTextPrimary,
                         ),
@@ -148,7 +148,7 @@ class _CarPicturesScreenState extends State<CarPicturesScreen> {
                     child: Center(
                       child: image == null
                           ? Icon(
-                              LucideIcons.imagePlus,
+                              Boxicons.bx_image_add,
                               size: 22,
                               color: context.appTextPrimary.withValues(
                                 alpha: 0.55,
@@ -163,7 +163,7 @@ class _CarPicturesScreenState extends State<CarPicturesScreen> {
                                 height: double.infinity,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
-                                    LucideIcons.imageOff,
+                                    Boxicons.bx_image_alt,
                                     size: 22,
                                     color: context.appTextPrimary.withValues(
                                       alpha: 0.55,

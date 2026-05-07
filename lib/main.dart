@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'design_system/app_design_system.dart';
-import 'features/home/home_screen.dart';
+import 'app_shell.dart';
 
 void main() {
   runApp(const MotogoApp());
@@ -21,7 +21,7 @@ class _MotogoAppState extends State<MotogoApp> {
       debugShowCheckedModeBanner: false,
       title: 'Motogo',
       theme: buildAppTheme(brightness: Brightness.light),
-      home: const HomeScreen(),
+      home: const AppShell(),
     );
   }
 }

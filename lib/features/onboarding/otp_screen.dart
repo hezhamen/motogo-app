@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -218,7 +218,7 @@ class _ResendCodePrompt extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(LucideIcons.info, size: 16, color: context.appTextPrimary),
+        Icon(Boxicons.bx_info_circle, size: 16, color: context.appTextPrimary),
         const SizedBox(width: AppSpacing.xs),
         Expanded(
           child: RichText(

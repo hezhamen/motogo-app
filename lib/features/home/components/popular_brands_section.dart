@@ -31,7 +31,6 @@ class _PopularBrandsSectionState extends State<PopularBrandsSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HomeSectionTitle('Popular Brands'),
           const SizedBox(height: AppSpacing.md),
           FutureBuilder<List<HomeBrand>>(
             future: _popularBrandsFuture,

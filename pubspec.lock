@@ -102,6 +102,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_boxicons:
+    dependency: "direct main"
+    description:
+      name: flutter_boxicons
+      sha256: fed008a37361d0064b427b95c4adf8c765edbbaa0e0f4d4abcfe609b7318e580
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -240,14 +248,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
-  lucide_icons_flutter:
-    dependency: "direct main"
-    description:
-      name: lucide_icons_flutter
-      sha256: "2d30a7bdd308b853f04e4eefc755e00df34d645c6c08b5591271cf38127e75f1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.13"
   matcher:
     dependency: transitive
     description:

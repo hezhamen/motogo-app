@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_widgets.dart';
 
@@ -7,38 +7,50 @@ class HomeBottomNavigation extends StatelessWidget {
   const HomeBottomNavigation({
     super.key,
     required this.height,
-    required this.onProfileTap,
+    required this.activeIndex,
+    required this.onTabSelected,
   });
 
   final double height;
-  final VoidCallback onProfileTap;
+  final int activeIndex;
+  final ValueChanged<int> onTabSelected;
 
   @override
   Widget build(BuildContext context) {
     return AppBottomNavigation(
       height: height,
       items: [
-        const AppBottomNavigationItem(
-          icon: LucideIcons.house,
+        AppBottomNavigationItem(
+          icon: activeIndex == 0 ? Boxicons.bxs_home : Boxicons.bx_home,
           label: 'Home',
-          isSelected: true,
-        ),
-        const AppBottomNavigationItem(
-          icon: LucideIcons.search,
-          label: 'Search',
-        ),
-        const AppBottomNavigationItem(
-          icon: LucideIcons.scanBarcode,
-          label: 'Vin Check',
-        ),
-        const AppBottomNavigationItem(
-          icon: LucideIcons.bookmark,
-          label: 'Saved',
+          isSelected: activeIndex == 0,
+          onTap: () => onTabSelected(0),
         ),
         AppBottomNavigationItem(
-          icon: LucideIcons.userRound,
+          icon: activeIndex == 1 ? Boxicons.bxs_search : Boxicons.bx_search,
+          label: 'Search',
+          isSelected: activeIndex == 1,
+          onTap: () => onTabSelected(1),
+        ),
+        AppBottomNavigationItem(
+          icon: activeIndex == 2
+              ? Boxicons.bxs_barcode
+              : Boxicons.bx_barcode_reader,
+          label: 'Vin Check',
+          isSelected: activeIndex == 2,
+          onTap: () => onTabSelected(2),
+        ),
+        AppBottomNavigationItem(
+          icon: activeIndex == 3 ? Boxicons.bxs_bookmark : Boxicons.bx_bookmark,
+          label: 'Saved',
+          isSelected: activeIndex == 3,
+          onTap: () => onTabSelected(3),
+        ),
+        AppBottomNavigationItem(
+          icon: activeIndex == 4 ? Boxicons.bxs_user : Boxicons.bx_user,
           label: 'Profile',
-          onTap: onProfileTap,
+          isSelected: activeIndex == 4,
+          onTap: () => onTabSelected(4),
         ),
       ],
     );

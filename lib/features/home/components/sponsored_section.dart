@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -211,7 +212,7 @@ class _FeedVehicleCardState extends State<_FeedVehicleCard> {
                       ),
                     ),
                     Icon(
-                      Icons.more_horiz_rounded,
+                      Boxicons.bx_dots_horizontal,
                       size: 20,
                       color: context.appTextPrimary,
                     ),
@@ -347,11 +348,7 @@ class _VehicleAvatar extends StatelessWidget {
         height: vehicle.brandLogoSize.height * 0.85,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
-          return Icon(
-            Icons.directions_car_rounded,
-            size: 18,
-            color: context.appTextPrimary,
-          );
+          return Icon(Boxicons.bx_car, size: 18, color: context.appTextPrimary);
         },
       ),
     );

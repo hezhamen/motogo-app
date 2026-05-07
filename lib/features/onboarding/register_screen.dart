@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
-                  LucideIcons.info,
+                  Boxicons.bx_info_circle,
                   size: 16,
                   color: context.appTextSecondary,
                 ),
@@ -169,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   Icon(
-                    LucideIcons.calendarDays,
+                    Boxicons.bx_calendar,
                     size: 18,
                     color: context.appTextPrimary,
                   ),

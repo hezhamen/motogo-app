@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'app_design_system.dart';
 
@@ -94,7 +94,7 @@ class AppFlowScaffold extends StatelessWidget {
                       child: IconButton(
                         onPressed:
                             onBack ?? () => Navigator.of(context).maybePop(),
-                        icon: const Icon(LucideIcons.arrowLeft, size: 18),
+                        icon: const Icon(Boxicons.bx_arrow_back, size: 18),
                         style: IconButton.styleFrom(
                           padding: EdgeInsets.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -322,7 +322,7 @@ class _AppNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = item.isSelected
+    final Color iconColor = item.isSelected
         ? context.appTextPrimary
         : context.appTextPrimary.withValues(alpha: 0.55);
 
@@ -339,7 +339,20 @@ class _AppNavigationItem extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: item.onTap,
-                child: Icon(item.icon, size: 24, color: color),
+                splashFactory: NoSplash.splashFactory,
+                overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                child: Center(
+                  child: AnimatedScale(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOutCubic,
+                    scale: item.isSelected ? 1.05 : 1,
+                    child: Icon(item.icon, size: 22, color: iconColor),
+                  ),
+                ),
               ),
             ),
           ),
@@ -349,7 +362,7 @@ class _AppNavigationItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.caption.copyWith(
-              color: color,
+              color: iconColor,
               fontSize: 11.5,
               letterSpacing: item.isSelected ? -0.23 : -0.34,
               fontWeight: item.isSelected ? FontWeight.w600 : FontWeight.w400,
@@ -561,7 +574,7 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
                   ),
                 ),
                 Icon(
-                  _isOpen ? LucideIcons.chevronUp : LucideIcons.chevronDown,
+                  _isOpen ? Boxicons.bx_chevron_up : Boxicons.bx_chevron_down,
                   size: 18,
                   color: context.appTextPrimary,
                 ),
@@ -610,7 +623,7 @@ class _SelectMenuItem extends StatelessWidget {
               ),
               if (isSelected)
                 Icon(
-                  LucideIcons.check,
+                  Boxicons.bx_check,
                   size: 16,
                   color: context.appTextPrimary,
                 ),

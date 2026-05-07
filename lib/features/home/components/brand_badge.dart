@@ -51,9 +51,11 @@ class BrandBadge extends StatelessWidget {
             Text(
               brand.name,
               maxLines: 1,
-              overflow: TextOverflow.visible,
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.caption.copyWith(
+                fontWeight: FontWeight.w600,
                 color: context.appTextSecondary,
+                fontSize: 12,
               ),
             ),
           ],

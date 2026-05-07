@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -80,7 +80,7 @@ class _VinCodeScreenState extends State<VinCodeScreen> {
               ),
               const SizedBox(width: 10),
               _IconButtonSurface(
-                icon: LucideIcons.scanLine,
+                icon: Boxicons.bx_scan,
                 semanticLabel: 'Scan the VIN code again',
                 onTap: widget.onScanVin,
               ),
@@ -88,7 +88,7 @@ class _VinCodeScreenState extends State<VinCodeScreen> {
           ),
           const SizedBox(height: 10),
           const PostCarHelperRow(
-            icon: LucideIcons.info,
+            icon: Boxicons.bx_info_circle,
             text:
                 'We use the VIN to confirm the vehicle and prefill the details on the next screen.',
           ),

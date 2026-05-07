@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -28,7 +28,7 @@ class PostCarChoiceScreen extends StatelessWidget {
           ),
           const SizedBox(height: 36),
           _ChoiceCard(
-            icon: LucideIcons.scanBarcode,
+            icon: Boxicons.bx_barcode_reader,
             title: 'Scan VIN code',
             description:
                 'Use the vehicle identification number to fetch the car details faster.',
@@ -36,7 +36,7 @@ class PostCarChoiceScreen extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           _ChoiceCard(
-            icon: LucideIcons.pencilLine,
+            icon: Boxicons.bx_edit,
             title: 'Enter details manually',
             description:
                 'Type the vehicle information yourself if the VIN is unavailable.',

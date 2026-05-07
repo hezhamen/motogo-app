@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -105,13 +105,13 @@ class PostCarChoiceCheckCard extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Icon(
-                      LucideIcons.circle,
+                      Boxicons.bx_circle,
                       size: 22,
                       color: context.appTextPrimary,
                     ),
                     if (selected)
                       Icon(
-                        LucideIcons.check,
+                        Boxicons.bx_check,
                         size: 14,
                         color: context.appTextPrimary,
                       ),

@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -155,7 +155,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
                         child: Row(
                           children: [
                             const _MetaChip(
-                              icon: LucideIcons.mapPin,
+                              icon: Boxicons.bx_map,
                               text: 'Sulaymaniyah',
                               alignEnd: false,
                             ),
@@ -169,7 +169,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen>
                             ),
                             const Spacer(),
                             const _MetaChip(
-                              icon: LucideIcons.clock,
+                              icon: Boxicons.bx_time,
                               text: '2 Days Ago',
                               alignEnd: true,
                             ),
@@ -334,7 +334,7 @@ class _DetailHeader extends StatelessWidget {
           height: 44,
           child: _HeaderCircleButton(
             semanticLabel: 'Back',
-            icon: LucideIcons.arrowLeft,
+            icon: Boxicons.bx_arrow_back,
             onTap: onBack,
           ),
         ),
@@ -465,7 +465,7 @@ class _HeroHeader extends StatelessWidget {
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(
-                        LucideIcons.car,
+                        Boxicons.bx_car,
                         size: 22,
                         color: logoIsLight
                             ? Colors.white.withValues(alpha: 0.7)
@@ -564,12 +564,20 @@ class _SpecGrid extends StatelessWidget {
   final AnimationController controller;
 
   static const specs = [
-    _SpecCardData(label: 'Piston', value: '4', icon: LucideIcons.circleDot),
-    _SpecCardData(label: 'Gearbox', value: 'Auto', icon: LucideIcons.settings),
-    _SpecCardData(label: 'Engine Size', value: '2.5', icon: LucideIcons.gauge),
-    _SpecCardData(label: 'Milage', value: '73,000 KM', icon: LucideIcons.route),
-    _SpecCardData(label: 'Region', value: 'USA', icon: LucideIcons.globe),
-    _SpecCardData(label: 'Petrol', value: 'Gas', icon: LucideIcons.fuel),
+    _SpecCardData(label: 'Piston', value: '4', icon: Boxicons.bx_circle),
+    _SpecCardData(label: 'Gearbox', value: 'Auto', icon: Boxicons.bx_cog),
+    _SpecCardData(
+      label: 'Engine Size',
+      value: '2.5',
+      icon: Boxicons.bx_tachometer,
+    ),
+    _SpecCardData(
+      label: 'Milage',
+      value: '73,000 KM',
+      icon: Boxicons.bx_line_chart,
+    ),
+    _SpecCardData(label: 'Region', value: 'USA', icon: Boxicons.bx_globe),
+    _SpecCardData(label: 'Petrol', value: 'Gas', icon: Boxicons.bx_gas_pump),
   ];
 
   @override

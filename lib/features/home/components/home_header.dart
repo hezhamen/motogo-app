@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/features/home/components/motogo_logo.dart';
@@ -40,7 +40,7 @@ class HomeHeader extends StatelessWidget {
               Row(
                 children: [
                   _HeaderActionButton(
-                    icon: LucideIcons.scanLine,
+                    icon: Boxicons.bx_scan,
                     backgroundColor: context.appSurfaceRaised,
                     iconColor: context.appTextPrimary,
                     semanticLabel: 'Scan vehicle',
@@ -53,7 +53,7 @@ class HomeHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   _HeaderActionButton(
-                    icon: LucideIcons.plus,
+                    icon: Boxicons.bx_plus,
                     backgroundColor: context.appAccent,
                     iconColor: Colors.white,
                     semanticLabel: 'Create listing',
@@ -82,8 +82,8 @@ class _LayoutToggleButton extends StatelessWidget {
         : HomeFeedLayout.grid;
 
     final IconData icon = value == HomeFeedLayout.grid
-        ? Icons.grid_view_outlined
-        : Icons.view_agenda_outlined;
+        ? Boxicons.bx_grid_alt
+        : Boxicons.bx_list_ul;
 
     final String semanticLabel = value == HomeFeedLayout.grid
         ? 'Switch to feed view'

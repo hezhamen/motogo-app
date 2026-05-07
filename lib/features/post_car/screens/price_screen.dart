@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -66,7 +66,7 @@ class _PriceScreenState extends State<PriceScreen> {
                     ),
                     const SizedBox(width: 10),
                     Icon(
-                      LucideIcons.chevronDown,
+                      Boxicons.bx_chevron_down,
                       size: 18,
                       color: context.appTextPrimary,
                     ),
@@ -162,7 +162,7 @@ class _PriceScreenState extends State<PriceScreen> {
                       ),
                       const SizedBox(width: 10),
                       Icon(
-                        LucideIcons.chevronDown,
+                        Boxicons.bx_chevron_down,
                         size: 18,
                         color: context.appTextPrimary,
                       ),
@@ -232,7 +232,7 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
             const SizedBox(height: 10),
             const PostCarHelperRow(
-              icon: LucideIcons.info,
+              icon: Boxicons.bx_info_circle,
               text:
                   'Email Address is used to send you latest updates and news and its optional in case you don’t want to add.',
             ),

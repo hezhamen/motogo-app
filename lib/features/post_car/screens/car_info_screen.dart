@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
@@ -656,7 +657,7 @@ class _SearchPickerSheetState extends State<_SearchPickerSheet> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.search_rounded,
+                      Boxicons.bx_search,
                       size: 18,
                       color: context.appTextSecondary,
                     ),
@@ -899,7 +900,7 @@ class _ChevronIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(Icons.keyboard_arrow_down_rounded, size: 18);
+    return const Icon(Boxicons.bx_chevron_down, size: 18);
   }
 }
 
