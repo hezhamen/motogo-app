@@ -9,18 +9,10 @@ class ProfileScreen extends StatelessWidget {
 
   static const String _phoneNumber = '+964 777 451 6006';
 
-  String _last4(String input) {
-    final String digits = input.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty) return '****';
-    return digits.length <= 4 ? digits : digits.substring(digits.length - 4);
-  }
-
   @override
   Widget build(BuildContext context) {
     final EdgeInsets viewPadding = MediaQuery.paddingOf(context);
     final double bottomNavHeight = viewPadding.bottom + 91;
-
-    final String last4 = _last4(_phoneNumber);
 
     return Scaffold(
       backgroundColor: context.appBackground,
@@ -109,9 +101,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        AppSurface(
-                          child: _LoggedInMenuItem(last4: last4, onTap: () {}),
-                        ),
+                        AppSurface(child: _LoggedInMenuItem(onTap: () {})),
                         const SizedBox(height: 18),
                         Text(
                           'SHORTCUTS',
@@ -261,9 +251,8 @@ class _ActionRow extends StatelessWidget {
 }
 
 class _LoggedInMenuItem extends StatelessWidget {
-  const _LoggedInMenuItem({required this.last4, required this.onTap});
+  const _LoggedInMenuItem({required this.onTap});
 
-  final String last4;
   final VoidCallback onTap;
 
   @override
@@ -290,7 +279,7 @@ class _LoggedInMenuItem extends StatelessWidget {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Text(
-                    'Logged in',
+                    'Edit profile',
                     style: AppTextStyles.value.copyWith(
                       color: context.appTextPrimary,
                       fontSize: 15,
@@ -299,7 +288,7 @@ class _LoggedInMenuItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '*$last4',
+                  '@hezhamen',
                   style: AppTextStyles.value.copyWith(
                     color: context.appTextSecondary,
                     fontSize: 15,
