@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'app_design_system.dart';
@@ -254,25 +255,40 @@ class AppTextField extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.style = AppTextStyles.value,
+    this.controller,
+    this.onChanged,
+    this.inputFormatters,
+    this.hintText,
   });
 
   final String initialValue;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final TextStyle style;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialValue,
+      controller: controller,
+      initialValue: controller == null ? initialValue : null,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       style: style.copyWith(color: context.appTextPrimary),
       cursorColor: context.appTextPrimary,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-      decoration: const InputDecoration(
+      onChanged: onChanged,
+      inputFormatters: inputFormatters,
+      decoration: InputDecoration(
         border: InputBorder.none,
         isCollapsed: true,
+        hintText: hintText,
+        hintStyle: style.copyWith(
+          color: context.appTextPrimary.withValues(alpha: 0.35),
+        ),
       ),
     );
   }
@@ -432,12 +448,14 @@ class AppSelectField<T> extends StatefulWidget {
     required this.value,
     required this.options,
     required this.onChanged,
+    this.placeholder,
   });
 
   final String label;
-  final T value;
+  final T? value;
   final List<AppSelectOption<T>> options;
   final ValueChanged<T> onChanged;
+  final String? placeholder;
 
   @override
   State<AppSelectField<T>> createState() => _AppSelectFieldState<T>();
@@ -519,9 +537,17 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final AppSelectOption<T> selectedOption = widget.options.firstWhere(
-      (option) => option.value == widget.value,
-    );
+    final AppSelectOption<T>? selectedOption = widget.value == null
+        ? null
+        : widget.options
+              .where((option) => option.value == widget.value)
+              .cast<AppSelectOption<T>?>()
+              .firstWhere((_) => true, orElse: () => null);
+    final String fieldLabel =
+        selectedOption?.label ??
+        widget.placeholder ??
+        'Select ${widget.label.toLowerCase()}';
+    final bool isPlaceholder = selectedOption == null;
 
     return OverlayPortal(
       controller: _overlayController,
@@ -611,9 +637,11 @@ class _AppSelectFieldState<T> extends State<AppSelectField<T>> {
               children: [
                 Expanded(
                   child: Text(
-                    selectedOption.label,
+                    fieldLabel,
                     style: AppTextStyles.value.copyWith(
-                      color: context.appTextPrimary,
+                      color: isPlaceholder
+                          ? context.appTextPrimary.withValues(alpha: 0.45)
+                          : context.appTextPrimary,
                     ),
                   ),
                 ),
