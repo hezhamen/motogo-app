@@ -58,16 +58,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             'Create your account',
-            style: AppTextStyles.title.copyWith(color: context.appTextPrimary),
+            style: AppTextStyles.sectionTitle.copyWith(
+              color: context.appTextPrimary,
+            ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 6),
           Text(
             'Set up your profile to get started with MotoGo and personalize your experience.',
             style: AppTextStyles.bodyMuted.copyWith(
               color: context.appTextSecondary,
             ),
           ),
-          const SizedBox(height: 22),
+          const SizedBox(height: 28),
           const AppFormFieldCard(
             label: 'Full Name',
             child: AppTextField(

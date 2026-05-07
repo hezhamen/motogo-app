@@ -15,32 +15,26 @@ class AppPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
-    final double bottomGap = keyboardInset > 0 ? AppSpacing.md : 0;
-
-    return Padding(
-      padding: EdgeInsets.only(bottom: bottomGap),
-      child: SafeArea(
-        top: false,
-        left: false,
-        right: false,
-        child: SizedBox(
-          width: double.infinity,
-          height: 61,
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: context.appButtonPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.button),
-              ),
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: SizedBox(
+        width: double.infinity,
+        height: 61,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            backgroundColor: context.appButtonPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.button),
             ),
-            child: Text(
-              label,
-              style: AppTextStyles.button.copyWith(
-                color: context.appButtonOnPrimary,
-              ),
+          ),
+          child: Text(
+            label,
+            style: AppTextStyles.button.copyWith(
+              color: context.appButtonOnPrimary,
             ),
           ),
         ),
@@ -75,6 +69,7 @@ class AppFlowScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final double effectiveBodyPadding =
         bodyHorizontalPadding ?? horizontalPadding;
+    final double keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
     return Scaffold(
       backgroundColor: backgroundColor ?? context.appBackground,
       body: GestureDetector(
@@ -122,7 +117,14 @@ class AppFlowScaffold extends StatelessWidget {
                 const SizedBox(height: 16),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: footer!,
+                  child: AnimatedPadding(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOutCubic,
+                    padding: EdgeInsets.only(
+                      bottom: keyboardInset > 0 ? AppSpacing.lg : 0,
+                    ),
+                    child: footer!,
+                  ),
                 ),
               ],
             ],
@@ -175,7 +177,7 @@ class AppSurface extends StatelessWidget {
   }
 }
 
-class AppFormFieldCard extends StatelessWidget {
+class AppFormFieldCard extends StatefulWidget {
   const AppFormFieldCard({
     super.key,
     required this.label,
@@ -188,23 +190,58 @@ class AppFormFieldCard extends StatelessWidget {
   final Widget? helper;
 
   @override
+  State<AppFormFieldCard> createState() => _AppFormFieldCardState();
+}
+
+class _AppFormFieldCardState extends State<AppFormFieldCard> {
+  final FocusScopeNode _scopeNode = FocusScopeNode();
+  bool _hasFocus = false;
+
+  @override
+  void dispose() {
+    _scopeNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Border? border = _hasFocus
+        ? Border.all(color: context.appTextPrimary.withValues(alpha: 0.18))
+        : null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: AppTextStyles.label.copyWith(color: context.appTextSecondary),
         ),
         const SizedBox(height: AppSpacing.sm),
-        AppSurface(
-          width: double.infinity,
-          height: 61,
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          alignment: Alignment.centerLeft,
-          child: child,
+        FocusScope(
+          node: _scopeNode,
+          onFocusChange: (hasFocus) {
+            if (_hasFocus == hasFocus) return;
+            setState(() => _hasFocus = hasFocus);
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 160),
+            curve: Curves.easeOutCubic,
+            width: double.infinity,
+            height: 61,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            decoration: BoxDecoration(
+              color: context.appSurface,
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              border: border,
+            ),
+            alignment: Alignment.centerLeft,
+            child: widget.child,
+          ),
         ),
-        if (helper != null) ...[const SizedBox(height: AppSpacing.xs), helper!],
+        if (widget.helper != null) ...[
+          const SizedBox(height: AppSpacing.xs),
+          widget.helper!,
+        ],
       ],
     );
   }

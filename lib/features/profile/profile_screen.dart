@@ -3,6 +3,7 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:motogo_app/design_system/app_design_system.dart';
 import 'package:motogo_app/design_system/app_widgets.dart';
+import 'package:motogo_app/features/onboarding/onboarding_flow.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -103,7 +104,24 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         AppSurface(
                           clipBehavior: Clip.hardEdge,
-                          child: _LoggedInMenuItem(onTap: () {}),
+                          child: Column(
+                            children: [
+                              _DevMenuItem(
+                                icon: Boxicons.bxs_flag,
+                                label: 'Start onboarding',
+                                badgeLabel: 'DEV',
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => const OnboardingFlow(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              _DividerLine(color: context.appOutlineSubtle),
+                              _LoggedInMenuItem(onTap: () {}),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 18),
                         Text(
@@ -309,6 +327,87 @@ class _LoggedInMenuItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
+                Icon(
+                  Boxicons.bx_chevron_right,
+                  size: 18,
+                  color: context.appTextPrimary.withValues(alpha: 0.55),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DevMenuItem extends StatelessWidget {
+  const _DevMenuItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.badgeLabel,
+  });
+
+  final IconData icon;
+  final String label;
+  final String? badgeLabel;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: label,
+      button: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: 15,
+            ),
+            child: Row(
+              children: [
+                Icon(icon, size: 20, color: context.appTextPrimary),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: AppTextStyles.value.copyWith(
+                      color: context.appTextPrimary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                if (badgeLabel case final String badgeLabel) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.appSurface,
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: context.appOutlineSubtle.withValues(alpha: 0.5),
+                      ),
+                    ),
+                    child: Text(
+                      badgeLabel,
+                      style: AppTextStyles.caption.copyWith(
+                        color: context.appTextSecondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
                 Icon(
                   Boxicons.bx_chevron_right,
                   size: 18,
