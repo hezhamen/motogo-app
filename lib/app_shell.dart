@@ -16,9 +16,11 @@ class _AppShellState extends State<AppShell> {
   int _activeIndex = 0;
   int _previousIndex = 0;
   final PageStorageBucket _bucket = PageStorageBucket();
+  bool _isBottomNavVisible = true;
 
   static const Duration _switchDuration = Duration(milliseconds: 280);
   static const Curve _switchCurve = Curves.easeOutCubic;
+  static const Duration _bottomNavDuration = Duration(milliseconds: 220);
 
   @override
   void initState() {
@@ -30,22 +32,28 @@ class _AppShellState extends State<AppShell> {
     super.dispose();
   }
 
-  static const List<Widget> _tabs = <Widget>[
-    HomeScreen(),
-    _PlaceholderTab(title: 'Search'),
-    _PlaceholderTab(title: 'Vin Check'),
-    _PlaceholderTab(title: 'Saved'),
-    ProfileScreen(),
-  ];
-
   Widget _buildActiveTab() {
+    final List<Widget> tabs = <Widget>[
+      HomeScreen(
+        onBottomNavVisibilityChanged: (visible) {
+          if (_activeIndex != 0) return;
+          if (_isBottomNavVisible == visible) return;
+          setState(() => _isBottomNavVisible = visible);
+        },
+      ),
+      const _PlaceholderTab(title: 'Search'),
+      const _PlaceholderTab(title: 'Vin Check'),
+      const _PlaceholderTab(title: 'Saved'),
+      const ProfileScreen(),
+    ];
+
     return KeyedSubtree(
       key: ValueKey<int>(_activeIndex),
       child: PageStorage(
         bucket: _bucket,
         child: KeyedSubtree(
           key: PageStorageKey<String>('tab_$_activeIndex'),
-          child: _tabs[_activeIndex],
+          child: tabs[_activeIndex],
         ),
       ),
     );
@@ -107,16 +115,27 @@ class _AppShellState extends State<AppShell> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: HomeBottomNavigation(
-                  height: bottomNavHeight,
-                  activeIndex: _activeIndex,
-                  onTabSelected: (index) {
-                    if (_activeIndex == index) return;
-                    setState(() {
-                      _previousIndex = _activeIndex;
-                      _activeIndex = index;
-                    });
-                  },
+                child: IgnorePointer(
+                  ignoring: !_isBottomNavVisible,
+                  child: AnimatedSlide(
+                    duration: _bottomNavDuration,
+                    curve: Curves.easeOutCubic,
+                    offset: _isBottomNavVisible
+                        ? Offset.zero
+                        : const Offset(0, 1),
+                    child: HomeBottomNavigation(
+                      height: bottomNavHeight,
+                      activeIndex: _activeIndex,
+                      onTabSelected: (index) {
+                        if (_activeIndex == index) return;
+                        setState(() {
+                          _isBottomNavVisible = true;
+                          _previousIndex = _activeIndex;
+                          _activeIndex = index;
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],
